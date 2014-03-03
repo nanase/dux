@@ -45,6 +45,7 @@
     <Folder Include="Component\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\Envelope.d" />
     <Compile Include="Component\EnvelopeState.d" />
     <Compile Include="Component\Enums.d" />
     <Compile Include="Utils.d" />
