@@ -1,3 +1,6 @@
+# Buckup files
+*~
+
 # Compiled Object files
 *.slo
 *.lo
@@ -11,3 +14,9 @@
 *.lai
 *.la
 *.a
+
+# MonoDevelop Project files
+*.userprefs
+
+# Directories
+bin/
