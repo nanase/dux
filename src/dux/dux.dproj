@@ -41,4 +41,10 @@
     <DebugLevel>0</DebugLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Component\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Component\Enums.d" />
+  </ItemGroup>
 </Project>
