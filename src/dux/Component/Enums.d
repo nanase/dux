@@ -1,5 +1,12 @@
 ﻿module dux.Component.Enums;
 
+public enum EnvelopeState
+{
+    silence,
+    attack,
+    release,
+}
+
 public enum RandomNoiseOperate
 {
     seed = 0x0100,

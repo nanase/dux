@@ -1,7 +1,6 @@
 ﻿module dux.Component.Envelope;
 
 import dux.Component.Enums;
-import dux.Component.EnvelopeState;
 import dux.Utils;
 
 public class Envelope
