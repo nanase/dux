@@ -1,7 +1,5 @@
 ﻿module dux.Utils;
 
-import std.algorithm;
-
 public:
 T clamp(T)(T min_value, T max_value, T value)
     in
@@ -15,5 +13,5 @@ T clamp(T)(T min_value, T max_value, T value)
     }
     body
     {
-        return max(min_value, min(max_value, value));
+        return (value < min_value) ? min_value : ((value > max_value) ? max_value : value);
     }
