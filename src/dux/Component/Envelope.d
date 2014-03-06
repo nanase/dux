@@ -7,6 +7,7 @@
 
 module dux.Component.Envelope;
 
+import std.math;
 import dux.Component.Enums;
 import dux.Utils;
 
@@ -142,10 +143,16 @@ public:
      *      samplingRate = サンプリング周波数。 
      */
     this(float samplingRate)
-    {
-        this.samplingRate = samplingRate;
-        this.reset();
-    }
+        in
+        {
+            assert(samplingRate > 0.0f);
+            assert(isFinite(samplingRate));
+        }
+        body
+        {
+            this.samplingRate = samplingRate;
+            this.reset();
+        }
 
 public:
     /**
@@ -321,6 +328,7 @@ public:
         in
         {
             assert(samplingRate > 0.0f);
+            assert(isFinite(samplingRate));
         }
         body
         {
