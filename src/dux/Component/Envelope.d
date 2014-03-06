@@ -11,9 +11,7 @@ import std.math;
 import dux.Component.Enums;
 import dux.Utils;
 
-/**
- * 時間によって変化するパラメータを実装するためのエンベロープ (包絡線) クラスです。
- */
+/** 時間によって変化するパラメータを実装するためのエンベロープ (包絡線) クラスです。 */
 public class Envelope
 {
 private:
@@ -22,28 +20,23 @@ private:
     EnvelopeState _state;
 
 public:
-    /**
-     * このエンベロープで使われるサンプリング周波数です。
-     */
+    /** このエンベロープで使われるサンプリング周波数です。 */
     immutable float samplingRate;
 
 public:
-    /**
-     * 現在のエンベロープの状態を表す列挙値を取得します。
+    /** 現在のエンベロープの状態を表す列挙値を取得します。
      * 
      * Returns: エンベロープの状態を表す dux.Complent.EnvelopeState 列挙値。
      */
     @property EnvelopeState state() { return this._state; }
 
-    /**
-     * ノートが開始されてピークに達するまでの遷移時間を取得します。
+    /** ノートが開始されてピークに達するまでの遷移時間を取得します。
      * 
      * Returns: アタック時間(秒)。
      */
     @property float attackTime() { return this._attackTime / this.samplingRate; }
 
-    /**
-     * ノートが開始されてピークに達するまでの遷移時間を設定します。
+    /** ノートが開始されてピークに達するまでの遷移時間を設定します。
      * 
      * Params:
      *      value = 設定される 0.0 以上の値。
@@ -55,15 +48,13 @@ public:
         return this._attackTime = cast(int)(clamp(0.0f, float.max, value) * this.samplingRate);
     }
 
-    /**
-     * ピークを維持する時間を取得します。
+    /** ピークを維持する時間を取得します。
      * 
      * Returns: ピーク時間(秒)。
      */
     @property float peakTime() { return this._peakTime / this.samplingRate; }
 
-    /**
-     * ピークを維持する時間を設定します。
+    /** ピークを維持する時間を設定します。
      * 
      * Params:
      *      value = 設定される 0.0 以上の値。
@@ -75,15 +66,13 @@ public:
         return this._peakTime = cast(int)(clamp(0.0f, float.max, value) * this.samplingRate);
     }
 
-    /**
-     * ピークからサスティンレベルに達するまでの遷移時間を取得します。
+    /** ピークからサスティンレベルに達するまでの遷移時間を取得します。
      * 
      * Returns: ディケイ時間(秒)。
      */
     @property float decayTime() { return this._decayTime / this.samplingRate; }
 
-    /**
-     * ピークからサスティンレベルに達するまでの遷移時間を設定します。
+    /** ピークからサスティンレベルに達するまでの遷移時間を設定します。
      * 
      * Params:
      *      value = 設定される 0.0 以上の値。
@@ -95,15 +84,13 @@ public:
         return this._decayTime = cast(int)(clamp(0.0f, float.max, value) * this.samplingRate);
     }
 
-    /**
-     * エンベロープがリリースされるまで持続するサスティンレベルを取得します。
+    /** エンベロープがリリースされるまで持続するサスティンレベルを取得します。
      * 
      * Returns: サスティンレベル。
      */
     @property float sustainLevel() { return this._sustainLevel; }
 
-    /**
-     * エンベロープがリリースされるまで持続するサスティンレベルを設定します。
+    /** エンベロープがリリースされるまで持続するサスティンレベルを設定します。
      * 
      * Params:
      *      value = 設定される 0.0 以上 1.0 以下の値。
@@ -115,15 +102,13 @@ public:
         return this._sustainLevel = clamp(0.0f, 1.0f, value);
     }
 
-    /**
-     * リリースされてからエンベロープが消滅するまでの時間を取得します。
+    /** リリースされてからエンベロープが消滅するまでの時間を取得します。
      * 
      * Returns: リリース時間(秒)。
      */
     @property float releaseTime() { return this._releaseTime / this.samplingRate; }
 
-    /**
-     * リリースされてからエンベロープが消滅するまでの時間を設定します。
+    /** リリースされてからエンベロープが消滅するまでの時間を設定します。
      * 
      * Params:
      *      value = 設定される 0.0 以上の値。
@@ -136,8 +121,7 @@ public:
     }
 
 public:
-    /**
-     * サンプリング周波数を指定して新しい Envelope クラスのインスタンスを初期化します。
+    /** サンプリング周波数を指定して新しい Envelope クラスのインスタンスを初期化します。
      * 
      * Params:
      *      samplingRate = サンプリング周波数。 
@@ -155,9 +139,7 @@ public:
         }
 
 public:
-    /**
-     * このインスタンスにおけるすべてのパラメータを既定値に戻します。
-     */
+    /** このインスタンスにおけるすべてのパラメータを既定値に戻します。 */
     void reset()
         out
         {
@@ -173,9 +155,7 @@ public:
             this._state = EnvelopeState.silence;
         }
 
-    /**
-     * エンベロープの状態をアタック状態に変更します。
-     */
+    /** エンベロープの状態をアタック状態に変更します。 */
     void attack()
         out
         {
@@ -192,8 +172,7 @@ public:
             this.dd = (1.0f - this._sustainLevel) / this._decayTime;
         }
 
-    /**
-     * エンベロープの状態をリリース状態に変更します。
+    /** エンベロープの状態をリリース状態に変更します。
      * 
      * Params:
      *      time = リリースが開始された時間値。 
@@ -223,9 +202,7 @@ public:
             }
         }
 
-    /**
-     * エンベロープの状態をサイレンス状態に変更します。
-     */
+    /** エンベロープの状態をサイレンス状態に変更します。 */
     void silence()
         out
         {
@@ -236,8 +213,7 @@ public:
             this._state = EnvelopeState.silence;
         }
 
-    /**
-     * 現在のエンベロープの状態に基づき、エンベロープ値を出力します。
+    /** 現在のエンベロープの状態に基づき、エンベロープ値を出力します。
      * 
      * Params:
      *      time      = エンベロープの開始時間値。
@@ -279,8 +255,7 @@ public:
             }
         }
 
-    /**
-     * パラメータを用いてこのエンベロープの設定値を変更します。
+    /** パラメータを用いてこのエンベロープの設定値を変更します。
      * 
      * Params:
      *      data1 = 整数パラメータ。
@@ -316,8 +291,7 @@ public:
     }
 
 public:
-    /**
-     * 値の変化しない、常に一定値を出力するエンベロープを作成します。
+    /** 値の変化しない、常に一定値を出力するエンベロープを作成します。
      * 
      * Params:
      *      samplingRate = サンプリング周波数。
