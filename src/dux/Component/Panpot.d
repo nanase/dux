@@ -17,10 +17,15 @@ public:
     }
 
     this(float value)
-    {
-        this.l = value >= 0.0f ? cast(float)sin((value + 1f) * PI / 2.0) : 1.0f;
-        this.r = value <= 0.0f ? cast(float)sin((-value + 1f) * PI / 2.0) : 1.0f;
-    }
+        in
+        {
+            assert(isFinite(value));
+        }
+        body
+        {
+            this.l = value >= 0.0f ? cast(float)sin((value + 1f) * PI / 2.0) : 1.0f;
+            this.r = value <= 0.0f ? cast(float)sin((-value + 1f) * PI / 2.0) : 1.0f;
+        }
 
     invariant()
     {
