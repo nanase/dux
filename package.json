@@ -1,0 +1,9 @@
+{
+    "name": "dux",
+    "description": "ux implementation for D",
+    "copyright": "Copyright (c) 2014 Tomona Nanase",
+    "authors": ["Tomona Nanase"],
+    "importPaths": ["src"],
+    "dependencies": {
+    }
+}
