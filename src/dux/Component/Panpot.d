@@ -30,8 +30,8 @@ public:
      */
     this(float lChannel, float rChannel)
     {
-        this.l = clamp(1.0f, 0.0f, lChannel);
-        this.r = clamp(1.0f, 0.0f, rChannel);
+        this.l = lChannel.clamp(1.0f, 0.0f);
+        this.r = rChannel.clamp(1.0f, 0.0f);
     }
 
     /** 左右チャネルのレベルを制御するパンポット値を指定して新しい Panpot 構造体のインスタンスを初期化します。

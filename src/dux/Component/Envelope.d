@@ -45,7 +45,7 @@ public:
      */
     @property float attackTime(float value) 
     {
-        return this._attackTime = cast(int)(clamp(float.max, 0.0f, value) * this.samplingRate);
+        return this._attackTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** ピークを維持する時間を取得します。
@@ -63,7 +63,7 @@ public:
      */
     @property float peakTime(float value) 
     {
-        return this._peakTime = cast(int)(clamp(float.max, 0.0f, value) * this.samplingRate);
+        return this._peakTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** ピークからサスティンレベルに達するまでの遷移時間を取得します。
@@ -81,7 +81,7 @@ public:
      */
     @property float decayTime(float value) 
     {
-        return this._decayTime = cast(int)(clamp(float.max, 0.0f, value) * this.samplingRate);
+        return this._decayTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** エンベロープがリリースされるまで持続するサスティンレベルを取得します。
@@ -99,7 +99,7 @@ public:
      */
     @property float sustainLevel(float value) 
     {
-        return this._sustainLevel = clamp(1.0f, 0.0f, value);
+        return this._sustainLevel = value.clamp(1.0f, 0.0f);
     }
 
     /** リリースされてからエンベロープが消滅するまでの時間を取得します。
@@ -117,7 +117,7 @@ public:
      */
     @property float releaseTime(float value) 
     {
-        return this._releaseTime = cast(int)(clamp(float.max, 0.0f, value) * this.samplingRate);
+        return this._releaseTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
 public:
@@ -266,23 +266,23 @@ public:
         switch (cast(EnvelopeOperate)data1)
         {
             case EnvelopeOperate.attack:
-                this._attackTime = cast(int)(clamp(float.max, 0.0f, data2) * this.samplingRate);
+                this._attackTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             case EnvelopeOperate.peak:
-                this._peakTime = cast(int)(clamp(float.max, 0.0f, data2) * this.samplingRate);
+                this._peakTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
 
             case EnvelopeOperate.decay:
-                this._decayTime = cast(int)(clamp(float.max, 0.0f, data2) * this.samplingRate);
+                this._decayTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             case EnvelopeOperate.sustain:
-                this._sustainLevel = clamp(1.0f, 0.0f, data2);
+                this._sustainLevel = data2.clamp(1.0f, 0.0f);
                 break;
                 
             case EnvelopeOperate.release:
-                this._releaseTime = cast(int)(clamp(float.max, 0.0f, data2) * this.samplingRate);
+                this._releaseTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             default:
