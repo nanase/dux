@@ -129,50 +129,50 @@ public:
      *      samplingRate = サンプリング周波数。 
      */
     this(float samplingRate)
-        in
-        {
-            assert(samplingRate > 0.0f);
-            assert(isFinite(samplingRate));
-        }
-        body
-        {
-            this.samplingRate = samplingRate;
-            this.reset();
-        }
+    in
+    {
+        assert(samplingRate > 0.0f);
+        assert(isFinite(samplingRate));
+    }
+    body
+    {
+        this.samplingRate = samplingRate;
+        this.reset();
+    }
 
 public:
     /** このインスタンスにおけるすべてのパラメータを既定値に戻します。 */
     void reset()
-        out
-        {
-            assert(this._state == EnvelopeState.silence);
-        }
-        body
-        {
-            this._attackTime = to!int(0.05f * this.samplingRate);
-            this._peakTime = to!int(0.0f * this.samplingRate);
-            this._decayTime = to!int(0.0f * this.samplingRate);
-            this._sustainLevel = 1.0f;
-            this._releaseTime = to!int(0.2f * this.samplingRate);
-            this._state = EnvelopeState.silence;
-        }
+    out
+    {
+        assert(this._state == EnvelopeState.silence);
+    }
+    body
+    {
+        this._attackTime = to!int(0.05f * this.samplingRate);
+        this._peakTime = to!int(0.0f * this.samplingRate);
+        this._decayTime = to!int(0.0f * this.samplingRate);
+        this._sustainLevel = 1.0f;
+        this._releaseTime = to!int(0.2f * this.samplingRate);
+        this._state = EnvelopeState.silence;
+    }
 
     /** エンベロープの状態をアタック状態に変更します。 */
     void attack()
-        out
-        {
-            assert(this._state == EnvelopeState.attack);
-        }
-        body
-        {
-            this._state = EnvelopeState.attack;
-            
-            //precalc
-            this.t2 = this._attackTime + this._peakTime;
-            this.t3 = t2 + this._decayTime;
-            this.da = 1.0f / this._attackTime;
-            this.dd = (1.0f - this._sustainLevel) / this._decayTime;
-        }
+    out
+    {
+        assert(this._state == EnvelopeState.attack);
+    }
+    body
+    {
+        this._state = EnvelopeState.attack;
+        
+        //precalc
+        this.t2 = this._attackTime + this._peakTime;
+        this.t3 = t2 + this._decayTime;
+        this.da = 1.0f / this._attackTime;
+        this.dd = (1.0f - this._sustainLevel) / this._decayTime;
+    }
 
     /** エンベロープの状態をリリース状態に変更します。
      * 
@@ -180,40 +180,40 @@ public:
      *      time = リリースが開始された時間値。 
      */
     void release(int time)
-        in
+    in
+    {
+        assert(time >= 0);
+    }
+    out
+    {
+        assert(this._state != EnvelopeState.attack);
+    }
+    body
+    {
+        if (this._state == EnvelopeState.attack)
         {
-            assert(time >= 0);
+            this._state = EnvelopeState.release;
+            this.releaseStartTime = time;
+            
+            //precalc
+            this.releaseStartLevel = (time < this._attackTime) ? time * this.da :
+            (time < this.t2) ? 1.0f :
+            (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this._sustainLevel;
+            this.t5 = time + this._releaseTime;
+            this.dr = this.releaseStartLevel / this._releaseTime;
         }
-        out
-        {
-            assert(this._state != EnvelopeState.attack);
-        }
-        body
-        {
-            if (this._state == EnvelopeState.attack)
-            {
-                this._state = EnvelopeState.release;
-                this.releaseStartTime = time;
-                
-                //precalc
-                this.releaseStartLevel = (time < this._attackTime) ? time * this.da :
-                (time < this.t2) ? 1.0f :
-                (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this._sustainLevel;
-                this.t5 = time + this._releaseTime;
-                this.dr = this.releaseStartLevel / this._releaseTime;
-            }
-        }
+    }
 
     /** エンベロープの状態をサイレンス状態に変更します。 */
     void silence()
-        out
-        {
-            assert(this._state == EnvelopeState.silence);
-        }
-        body
-        {
-            this._state = EnvelopeState.silence;
-        }
+    out
+    {
+        assert(this._state == EnvelopeState.silence);
+    }
+    body
+    {
+        this._state = EnvelopeState.silence;
+    }
 
     /** 現在のエンベロープの状態に基づき、エンベロープ値を出力します。
      * 
@@ -224,38 +224,38 @@ public:
      *      count     = 代入される実数値の数。
      */
     void generate(int time, float[] envelopes, int count)
-        in
+    in
+    {
+        assert(time >= 0);
+        assert(envelopes != null);
+        assert(count >= 0);
+        assert(envelopes.length <= count);
+    }
+    body
+    {
+        float res;
+        for (int i = 0; i < count; i++, time++)
         {
-            assert(time >= 0);
-            assert(envelopes != null);
-            assert(count >= 0);
-            assert(envelopes.length <= count);
-        }
-        body
-        {
-            float res;
-            for (int i = 0; i < count; i++, time++)
+            if (this._state == EnvelopeState.attack)
+                res = (time < this._attackTime) ? time * this.da :
+                (time < this.t2) ? 1.0f :
+                (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this._sustainLevel;
+            else if (this._state == EnvelopeState.release)
             {
-                if (this._state == EnvelopeState.attack)
-                    res = (time < this._attackTime) ? time * this.da :
-                    (time < this.t2) ? 1.0f :
-                    (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this._sustainLevel;
-                else if (this._state == EnvelopeState.release)
-                {
-                    if (time < this.t5)
-                        res = this.releaseStartLevel - (time - this.releaseStartTime) * this.dr;
-                    else
-                    {
-                        res = 0.0f;
-                        this._state = EnvelopeState.silence;
-                    }
-                }
+                if (time < this.t5)
+                    res = this.releaseStartLevel - (time - this.releaseStartTime) * this.dr;
                 else
+                {
                     res = 0.0f;
-                
-                envelopes[i] = res;
+                    this._state = EnvelopeState.silence;
+                }
             }
+            else
+                res = 0.0f;
+            
+            envelopes[i] = res;
         }
+    }
 
     /** パラメータを用いてこのエンベロープの設定値を変更します。
      * 
@@ -301,25 +301,25 @@ public:
      * Returns: 一定出力値を持つエンベロープ。
      */
     static Envelope CreateConstant(float samplingRate)
-        in
-        {
-            assert(samplingRate > 0.0f);
-            assert(isFinite(samplingRate));
-        }
-        body
-        {
-            Envelope envelope = new Envelope(samplingRate);
-            envelope.attackTime = 0;
-            envelope.peakTime = 0;
-            envelope.decayTime = 0;
-            envelope.sustainLevel = 1.0f;
-            envelope.releaseTime = 0;
-            
-            return envelope;
-        } 
-        unittest
-        {
-            Envelope envelope = Envelope.CreateConstant(100.0f);
-            assert(envelope.samplingRate == 100.0f);
-        }
+    in
+    {
+        assert(samplingRate > 0.0f);
+        assert(isFinite(samplingRate));
+    }
+    body
+    {
+        Envelope envelope = new Envelope(samplingRate);
+        envelope.attackTime = 0;
+        envelope.peakTime = 0;
+        envelope.decayTime = 0;
+        envelope.sustainLevel = 1.0f;
+        envelope.releaseTime = 0;
+        
+        return envelope;
+    } 
+    unittest
+    {
+        Envelope envelope = Envelope.CreateConstant(100.0f);
+        assert(envelope.samplingRate == 100.0f);
+    }
 }

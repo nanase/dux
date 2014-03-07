@@ -40,16 +40,17 @@ public:
      *      value = パンポット値。
      */
     this(float value)
-        in
-        {
-            assert(isFinite(value));
-            assert(value >= -1.0f && value <= 1.0f);
-        }
-        body
-        {
-            this.l = value >= 0.0f ? sin((value + 1f) * PI / 2.0) : 1.0f;
-            this.r = value <= 0.0f ? sin((-value + 1f) * PI / 2.0) : 1.0f;
-        }
+    in
+    {
+        assert(isFinite(value));
+        assert(value >= -1.0f && value <= 1.0f);
+    }
+    body
+    {
+        this.l = value >= 0.0f ? sin((value + 1f) * PI / 2.0) : 1.0f;
+        this.r = value <= 0.0f ? sin((-value + 1f) * PI / 2.0) : 1.0f;
+    }
+
 
     invariant()
     {
