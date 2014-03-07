@@ -50,5 +50,6 @@
     <Compile Include="Program.d" />
     <Compile Include="Component\Panpot.d" />
     <Compile Include="Utils.d" />
+    <Compile Include="Component\Handle.d" />
   </ItemGroup>
 </Project>
