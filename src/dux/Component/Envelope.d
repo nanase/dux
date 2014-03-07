@@ -7,7 +7,9 @@
 
 module dux.Component.Envelope;
 
+import std.conv;
 import std.math;
+
 import dux.Component.Enums;
 import dux.Utils;
 
@@ -45,7 +47,7 @@ public:
      */
     @property float attackTime(float value) 
     {
-        return this._attackTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
+        return this._attackTime = to!int(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** ピークを維持する時間を取得します。
@@ -63,7 +65,7 @@ public:
      */
     @property float peakTime(float value) 
     {
-        return this._peakTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
+        return this._peakTime = to!int(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** ピークからサスティンレベルに達するまでの遷移時間を取得します。
@@ -81,7 +83,7 @@ public:
      */
     @property float decayTime(float value) 
     {
-        return this._decayTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
+        return this._decayTime = to!int(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
     /** エンベロープがリリースされるまで持続するサスティンレベルを取得します。
@@ -117,7 +119,7 @@ public:
      */
     @property float releaseTime(float value) 
     {
-        return this._releaseTime = cast(int)(value.clamp(float.max, 0.0f) * this.samplingRate);
+        return this._releaseTime = to!int(value.clamp(float.max, 0.0f) * this.samplingRate);
     }
 
 public:
@@ -147,11 +149,11 @@ public:
         }
         body
         {
-            this._attackTime = cast(int)(0.05f * this.samplingRate);
-            this._peakTime = cast(int)(0.0f * this.samplingRate);
-            this._decayTime = cast(int)(0.0f * this.samplingRate);
+            this._attackTime = to!int(0.05f * this.samplingRate);
+            this._peakTime = to!int(0.0f * this.samplingRate);
+            this._decayTime = to!int(0.0f * this.samplingRate);
             this._sustainLevel = 1.0f;
-            this._releaseTime = cast(int)(0.2f * this.samplingRate);
+            this._releaseTime = to!int(0.2f * this.samplingRate);
             this._state = EnvelopeState.silence;
         }
 
@@ -266,15 +268,15 @@ public:
         switch (cast(EnvelopeOperate)data1)
         {
             case EnvelopeOperate.attack:
-                this._attackTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
+                this._attackTime = to!int(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             case EnvelopeOperate.peak:
-                this._peakTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
+                this._peakTime = to!int(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
 
             case EnvelopeOperate.decay:
-                this._decayTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
+                this._decayTime = to!int(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             case EnvelopeOperate.sustain:
@@ -282,7 +284,7 @@ public:
                 break;
                 
             case EnvelopeOperate.release:
-                this._releaseTime = cast(int)(data2.clamp(float.max, 0.0f) * this.samplingRate);
+                this._releaseTime = to!int(data2.clamp(float.max, 0.0f) * this.samplingRate);
                 break;
                 
             default:
