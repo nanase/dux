@@ -26,7 +26,7 @@ unittest
     assert(clamp(3.0, 2.0, 1.0) == 2.0);
     assert(clamp(1.9, 2.0, 1.0) == 1.9);
     assert(clamp(1.1, 2.0, 1.0) == 1.1);
-    assert(0.9.clamp(2.0, 1.0) == 1.0);     // UFCS, value.clamp(min, max)
+    assert(0.9.clamp(2.0, 1.0) == 1.0);     // UFCS, value.clamp(max, min)
 
     // user-defined type
     import std.datetime;
