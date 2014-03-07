@@ -1,7 +1,7 @@
 ﻿module dux.Utils;
 
 public:
-T clamp(T)(T min_value, T max_value, T value)
+T clamp(T)(T max_value, T min_value, T value)
     in
     {
         assert(min_value <= max_value);
