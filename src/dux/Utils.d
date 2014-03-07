@@ -6,10 +6,10 @@ T clamp(T)(T max_value, T min_value, T value)
     {
         assert(min_value <= max_value);
     }
-    out
+    out(result)
     {
-        assert(min_value <= value);
-        assert(max_value >= value);
+        assert(min_value <= result);
+        assert(max_value >= result);
     }
     body
     {
