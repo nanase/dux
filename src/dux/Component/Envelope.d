@@ -221,8 +221,6 @@ public:
      * 
      * Params:
      *      time      = エンベロープの開始時間値。
-     *      envelopes = 出力が格納される実数の配列。
-     *      offset    = 代入が開始される配列のインデックス。
      *      count     = 代入される実数値の数。
      */
     auto generate(int time, size_t count)
@@ -354,7 +352,13 @@ public:
     }
 
 
-    /// ditto
+    /** 現在のエンベロープの状態に基づき、エンベロープ値を出力します。
+     * 
+     * Params:
+     *      time      = エンベロープの開始時間値。
+     *      envelopes = 出力が格納される実数のレンジ。
+     *      count     = 代入される実数値の数。
+     */
     void generate(R)(int time, R envelopes, size_t count)
     if(isOutputRange!(R, float))
     in
