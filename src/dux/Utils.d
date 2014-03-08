@@ -1,17 +1,40 @@
 ﻿module dux.Utils;
 
-public:
-T clamp(T)(T max_value, T min_value, T value)
-    in
-    {
-        assert(min_value <= max_value);
-    }
-    out(result)
-    {
-        assert(min_value <= result);
-        assert(max_value >= result);
-    }
-    body
-    {
-        return (value < min_value) ? min_value : ((value > max_value) ? max_value : value);
-    }
+
+import std.algorithm;
+
+
+T clamp(T)(T value, T maxValue, T minValue)
+if(is(typeof(maxValue > minValue)))
+in
+{
+    assert(minValue <= maxValue);
+}
+out(result)
+{
+    assert(minValue <= result);
+    assert(maxValue >= result);
+}
+body
+{
+    return min(max(value, minValue), maxValue);
+}
+
+///
+unittest
+{
+    assert(clamp(3.0, 2.0, 1.0) == 2.0);
+    assert(clamp(1.9, 2.0, 1.0) == 1.9);
+    assert(clamp(1.1, 2.0, 1.0) == 1.1);
+    assert(0.9.clamp(2.0, 1.0) == 1.0);     // UFCS, value.clamp(max, min)
+
+    // user-defined type
+    import std.datetime;
+    auto minDate = Date(2014, 3, 1),
+         maxDate = Date(2014, 3, 7);
+
+    assert(Date(2014, 3, 8).clamp(maxDate, minDate) == Date(2014, 3, 7));
+    assert(Date(2014, 3, 6).clamp(maxDate, minDate) == Date(2014, 3, 6));
+    assert(Date(2014, 3, 2).clamp(maxDate, minDate) == Date(2014, 3, 2));
+    assert(Date(2014, 2, 28).clamp(maxDate, minDate) == Date(2014, 3, 1));
+}

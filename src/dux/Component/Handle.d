@@ -10,7 +10,7 @@ module dux.Component.Handle;
 import dux.Component.Enums;
 
 /** シンセサイザに対する命令をサポートします。 */
-public class Handle
+class Handle
 {
 public:
     /** 対象となるパート。 */
