@@ -14,7 +14,7 @@ import dux.Component.Enums;
 import dux.Utils;
 
 /** 時間によって変化するパラメータを実装するためのエンベロープ (包絡線) クラスです。 */
-public class Envelope
+class Envelope
 {
 private:
     int releaseStartTime, t2, t3, t5, _attackTime, _peakTime, _decayTime, _releaseTime;
@@ -227,7 +227,7 @@ public:
     in
     {
         assert(time >= 0);
-        assert(envelopes != null);
+        assert(envelopes !is null);
         assert(count >= 0);
         assert(envelopes.length <= count);
     }

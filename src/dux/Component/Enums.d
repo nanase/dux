@@ -8,7 +8,7 @@
 module dux.Component.Enums;
 
 /** 内部で扱われるハンドルのタイプを表す列挙体です。 */
-public enum HandleType
+enum HandleType
 {
     /** ゼロのゲートを持ち、発音されないノートを表します。 */
     zeroGate,
@@ -57,7 +57,7 @@ public enum HandleType
 }
 
 /** エンベロープの状態を表す列挙体です。 */
-public enum EnvelopeState
+enum EnvelopeState
 {
     /** 無音状態。 */
     silence,
@@ -70,7 +70,7 @@ public enum EnvelopeState
 }
 
 /** 擬似乱数ジェネレータに作用するオプションを表した列挙体です。 */
-public enum RandomNoiseOperate
+enum RandomNoiseOperate
 {
     /** 擬似乱数ジェネレータのシード値。 */
     seed = 0x0100,
@@ -80,7 +80,7 @@ public enum RandomNoiseOperate
 }
 
 /** 基本波形クラスに作用するオプションを表した列挙体です。 */
-public enum BasicWaveformOperate
+enum BasicWaveformOperate
 {
     /** デューティ比。 */
     duty = 0x0100,
@@ -90,7 +90,7 @@ public enum BasicWaveformOperate
 }
 
 /** ステップ波形クラスに作用するオプションを表した列挙体です。 */
-public enum StepWaveformOperate
+enum StepWaveformOperate
 {
     /** 周波数計数。
      * 指定された値が周波数計数に乗算されます。 */
@@ -109,7 +109,7 @@ public enum StepWaveformOperate
 }
 
 /** FM 音源クラスに作用するオプションを表した列挙体です。 */
-public enum FMOperate
+enum FMOperate
 {
     /** オペレータ 0 に対する変調指数。 */
     send0 = 0x0000,
@@ -162,7 +162,7 @@ public enum FMOperate
 }
 
 /** エンベロープに作用するオプションを表した列挙体です。 */
-public enum EnvelopeOperate
+enum EnvelopeOperate
 {
     /** オプションなし。 
      * これは音源に対するオプションと組み合わせるために用意されています。
@@ -201,7 +201,7 @@ public enum EnvelopeOperate
 }
 
 /** ボリュームに作用するオプションを表した列挙体です。 */
-public enum VolumeOperate
+enum VolumeOperate
 {
     /** 変化を伴わない音量。ボリューム。 */
     volume,
@@ -217,7 +217,7 @@ public enum VolumeOperate
 }
 
 /** ビブラートに作用するオプションを表した列挙体です。 */
-public enum VibrateOperate
+enum VibrateOperate
 {
     /** ビブラート無効。 */
     off,
@@ -236,7 +236,7 @@ public enum VibrateOperate
 }
 
 /** 音源の種類を表した列挙体です。 */
-public enum WaveformType
+enum WaveformType
 {
     /** 矩形波。 */
     square,
@@ -258,7 +258,7 @@ public enum WaveformType
 }
 
 /** ポルタメントに作用するオプションを表した列挙体です。 */
-public enum PortamentOperate
+enum PortamentOperate
 {
     /** ポルタメント無効。 */
     off,
