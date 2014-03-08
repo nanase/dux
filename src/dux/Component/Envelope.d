@@ -224,6 +224,12 @@ public:
      *      count     = 代入される実数値の数。
      */
     auto generate(int time, size_t count)
+    in
+    {
+        assert(time >= 0);
+        assert(count < uint.max);
+    }
+    body
     {
         static struct Result
         {
