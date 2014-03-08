@@ -275,13 +275,15 @@ public:
                 assert(a <= b);
                 assert(a <= this.length);
                 assert(b <= this.length);
+                assert(a < uint.max);
+                assert(b < uint.max);
             }
             body
             {
                 auto dst = this;
 
                 dst._time += a;
-                dst._endTime = dst._time + (b - a);
+                dst._endTime = dst._time + cast(int)(b - a);
                 dst._front = dst.generateEnvelope(_time);
 
                 return dst;
@@ -321,7 +323,7 @@ public:
         }
 
 
-        auto dst = Result(time, time + count, this, float.nan);
+        auto dst = Result(time, cast(int)(time + count), this, float.nan);
 
         if (!dst.empty)
             dst._front = dst.generateEnvelope(time);
