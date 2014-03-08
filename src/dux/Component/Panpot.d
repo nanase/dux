@@ -12,16 +12,14 @@ import std.math;
 import dux.Utils;
 
 /** 音の定位 (左右チャネルのバランス) を表す実数値を格納する構造体です。 */
-public struct Panpot
+struct Panpot
 {
-public:
-    /** 左チャネルのレベル。 */
-    immutable float l;
-
-    /** 右チャネルのレベル。 */
-    immutable float r;
+pure nothrow @safe: // 純粋な値型
+private:
+    float _l, _r;
 
 public:
+
     /** 左右チャネルのレベルを指定して新しい Panpot 構造体のインスタンスを初期化します。
      * 
      * Params:
@@ -30,8 +28,8 @@ public:
      */
     this(float lChannel, float rChannel)
     {
-        this.l = lChannel.clamp(1.0f, 0.0f);
-        this.r = rChannel.clamp(1.0f, 0.0f);
+        this._l = lChannel.clamp(1.0f, 0.0f);
+        this._r = rChannel.clamp(1.0f, 0.0f);
     }
 
     /** 左右チャネルのレベルを制御するパンポット値を指定して新しい Panpot 構造体のインスタンスを初期化します。
@@ -47,15 +45,38 @@ public:
     }
     body
     {
-        this.l = value >= 0.0f ? sin((value + 1f) * PI / 2.0) : 1.0f;
-        this.r = value <= 0.0f ? sin((-value + 1f) * PI / 2.0) : 1.0f;
+        this._l = value >= 0.0f ? sin((value + 1f) * PI / 2.0) : 1.0f;
+        this._r = value <= 0.0f ? sin((-value + 1f) * PI / 2.0) : 1.0f;
     }
+
+const:
+
+    /** 左チャネルのレベル。 */
+    float l() @property { return _l; }
+
+    /** 右チャネルのレベル。 */
+    float r() @property { return _r; }
 
 
     invariant()
     {
-        assert(this.l >= 0.0f && this.l <= 1.0f);
-        assert(this.r >= 0.0f && this.r <= 1.0f);
+        assert(this._l >= 0.0f && this._l <= 1.0f);
+        assert(this._r >= 0.0f && this._r <= 1.0f);
     }
 }
 
+pure nothrow @safe
+unittest
+{
+    Panpot ppt;
+
+    ppt = Panpot(0.5, 0.5);
+    ppt = Panpot(0.8);
+
+    static assert(!is(typeof({
+        ppt.l = 0.2;    // NG
+        ppt.r = 0.3;    // NG
+    })));
+
+    ppt = ppt;  // OK
+}
