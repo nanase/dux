@@ -7,8 +7,10 @@
 
 module dux.Component.Envelope;
 
+import std.algorithm;
 import std.conv;
 import std.math;
+import std.range;
 
 import dux.Component.Enums;
 import dux.Utils;
@@ -223,39 +225,167 @@ public:
      *      offset    = 代入が開始される配列のインデックス。
      *      count     = 代入される実数値の数。
      */
-    void generate(int time, float[] envelopes, int count)
+    auto generate(int time, size_t count)
+    {
+        static struct Result
+        {
+          pure nothrow @safe:
+
+            /// range primitives
+            float front() @property const { return _front; }
+
+            /// ditto
+            bool empty() @property const { return _time == _endTime; }
+
+            /// ditto
+            void popFront()
+            {
+                ++_time;
+
+                if(!this.empty)
+                    _front = generateEnvelope(_time);
+            }
+
+            /// ditto
+            auto save() @property
+            {
+                return this;
+            }
+
+            /// ditto
+            size_t length() @property const
+            {
+                return _endTime - _time;
+            }
+
+            /// ditto
+            auto opSlice()
+            {
+                return this;
+            }
+
+            /// ditto
+            auto opSlice(size_t a, size_t b)
+            in{
+                assert(a <= b);
+                assert(a <= this.length);
+                assert(b <= this.length);
+            }
+            body{
+                auto dst = this;
+
+                dst._time += a;
+                dst._endTime = dst._time + (b - a);
+                dst._front = dst.generateEnvelope(_time);
+
+                return dst;
+            }
+
+
+          private:
+            int _time;
+            int _endTime;
+            Envelope _env;
+            float _front;
+
+
+            float generateEnvelope(int time)
+            {
+                float res;
+
+                if (_env._state == EnvelopeState.attack)
+                    res = (time < _env._attackTime) ? time * _env.da :
+                    (time < _env.t2) ? 1.0f :
+                    (time < _env.t3) ? 1.0f - (time - _env.t2) * _env.dd : _env._sustainLevel;
+                else if (_env._state == EnvelopeState.release)
+                {
+                    if (time < _env.t5)
+                        res = _env.releaseStartLevel - (time - _env.releaseStartTime) * _env.dr;
+                    else
+                    {
+                        res = 0.0f;
+                        _env._state = EnvelopeState.silence;
+                    }
+                }
+                else
+                    res = 0.0f;
+
+                return res;
+            }
+        }
+
+
+        auto dst = Result(time, time + count, this, float.nan);
+
+        if(!dst.empty)
+            dst._front = dst.generateEnvelope(time);
+
+        return dst;
+    }
+
+    unittest{
+        static void test(Envelope env)
+        {
+            auto r = env.generate(64, 1024);
+
+            assert(r.length == 1024);
+            assert(!r.empty);
+            assert(r.front == r.generateEnvelope(64));
+
+            r.popFront();
+            assert(r.length == 1023);
+            assert(!r.empty);
+            assert(r.front == r.generateEnvelope(65));
+
+            r.popFrontN(1022);
+            assert(r.length == 1);
+            assert(!r.empty);
+
+            r.popFront();
+            assert(r.length == 0);
+            assert(r.empty);
+        }
+
+        // envを適切に初期化して、テストする必要があるので、
+        // 書き直す必要あり
+        Envelope env = new Envelope(64);
+        env.attack();
+        test(env);
+    }
+
+
+    /// ditto
+    void generate(R)(int time, R envelopes, size_t count)
+    if(isOutputRange!(R, float))
     in
     {
         assert(time >= 0);
-        assert(envelopes !is null);
         assert(count >= 0);
-        assert(envelopes.length <= count);
     }
     body
     {
-        float res;
-        for (int i = 0; i < count; i++, time++)
-        {
-            if (this._state == EnvelopeState.attack)
-                res = (time < this._attackTime) ? time * this.da :
-                (time < this.t2) ? 1.0f :
-                (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this._sustainLevel;
-            else if (this._state == EnvelopeState.release)
-            {
-                if (time < this.t5)
-                    res = this.releaseStartLevel - (time - this.releaseStartTime) * this.dr;
-                else
-                {
-                    res = 0.0f;
-                    this._state = EnvelopeState.silence;
-                }
-            }
-            else
-                res = 0.0f;
-            
-            envelopes[i] = res;
-        }
+        generate(time, count).copy(envelopes);
     }
+
+    unittest{
+        static void test(Envelope env)
+        {
+            float[] fltArr = new float[24];
+            env.generate(0, fltArr, 24);
+            assert(fltArr.length == 24);
+
+            auto app = appender!(float[])();
+            env.generate(0, app, 24);
+            assert(app.data.length == 24);
+        }
+
+        // envを適切に初期化して、テストする必要があるので、
+        // 書き直す必要あり
+        Envelope env = new Envelope(64);
+        env.attack();
+        test(env);
+    }
+
 
     /** パラメータを用いてこのエンベロープの設定値を変更します。
      * 
