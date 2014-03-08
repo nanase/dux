@@ -465,6 +465,23 @@ public:
     unittest
     {
         Envelope envelope = Envelope.CreateConstant(100.0f);
-        assert(envelope.samplingRate == 100.0f);
+
+        envelope.attack();
+        {
+            auto r = envelope.generate(0, 10);
+            assert(r.length == 10);
+            assert(!r.empty);
+            r.popFront();
+            assert(r.front == 1.0f);
+        }
+
+        envelope.release(10);
+        {
+            auto r = envelope.generate(10, 10);
+            assert(r.length == 10);
+            assert(!r.empty);
+            r.popFront();
+            assert(r.front == 0.0f);
+        }
     }
 }
