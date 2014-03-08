@@ -227,7 +227,7 @@ public:
     {
         static struct Result
         {
-          pure nothrow @safe:
+        pure nothrow @safe:
 
             /// range primitives
             float front() @property const { return _front; }
@@ -240,7 +240,7 @@ public:
             {
                 ++_time;
 
-                if(!this.empty)
+                if (!this.empty)
                     _front = generateEnvelope(_time);
             }
 
@@ -264,12 +264,14 @@ public:
 
             /// ditto
             auto opSlice(size_t a, size_t b)
-            in{
+            in
+            {
                 assert(a <= b);
                 assert(a <= this.length);
                 assert(b <= this.length);
             }
-            body{
+            body
+            {
                 auto dst = this;
 
                 dst._time += a;
@@ -280,7 +282,7 @@ public:
             }
 
 
-          private:
+        private:
             int _time;
             int _endTime;
             Envelope _env;
@@ -315,13 +317,14 @@ public:
 
         auto dst = Result(time, time + count, this, float.nan);
 
-        if(!dst.empty)
+        if (!dst.empty)
             dst._front = dst.generateEnvelope(time);
 
         return dst;
     }
 
-    unittest{
+    unittest
+    {
         static void test(Envelope env)
         {
             auto r = env.generate(64, 1024);
@@ -360,7 +363,7 @@ public:
      *      count     = 代入される実数値の数。
      */
     void generate(R)(int time, R envelopes, size_t count)
-    if(isOutputRange!(R, float))
+    if (isOutputRange!(R, float))
     in
     {
         assert(time >= 0);
@@ -371,7 +374,8 @@ public:
         generate(time, count).copy(envelopes);
     }
 
-    unittest{
+    unittest
+    {
         static void test(Envelope env)
         {
             float[] fltArr = new float[24];
@@ -450,7 +454,8 @@ public:
         envelope.releaseTime = 0;
         
         return envelope;
-    } 
+    }
+
     unittest
     {
         Envelope envelope = Envelope.CreateConstant(100.0f);
