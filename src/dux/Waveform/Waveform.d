@@ -20,7 +20,7 @@ public:
      *      sampleTime = 波形が開始されるサンプル時間。
      *      count      = 配列に代入されるデータの数。
      */
-    void GetWaveforms
+    void getWaveforms
         (float[] data, double[] frequency, double[] phase, int sampleTime, size_t count)
     in
     {
@@ -37,23 +37,23 @@ public:
      *      data1 = 整数パラメータ。
      *      data2 = 実数パラメータ。
      */
-    void SetParameter(int data1, float data2);
+    void setParameter(int data1, float data2);
     
     /** エンベロープをアタック状態に遷移させます。 **/
-    void Attack();
+    void attack();
     
     /** エンベロープをリリース状態に遷移させます。
      *
      * Params:
      *      time = リリースされたサンプル時間。
      */
-    void Release(int time)
+    void release(int time)
     in
-    {        
+    {
         assert(time >= 0);
     }
     
     /** 波形のパラメータをリセットします。 */
-    void Reset();
+    void reset();
 }
 
