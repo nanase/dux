@@ -20,15 +20,15 @@ public:
      *      sampleTime = 波形が開始されるサンプル時間。
      *      count      = 配列に代入されるデータの数。
      */
-    void GetWaveforms(Range1, Range2, Range3)
-        (Range1 data, Range2 frequency, Range3 phase, int sampleTime, size_t count)
+    void GetWaveforms
+        (float[] data, double[] frequency, double[] phase, int sampleTime, size_t count)
     in
     {
-        //assert(data.length == frequency.length);
-        //assert(data.length == phase.length);
+        assert(data.length == frequency.length);
+        assert(data.length == phase.length);
 
         assert(sampleTime >= 0);
-        //assert(count <= data.length);
+        assert(count <= data.length);
     }
     
     /** パラメータを指定して波形の設定値を変更します。
