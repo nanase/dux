@@ -7,6 +7,8 @@
 
 module dux.Component.Waveform;
 
+import std.math;
+
 /** 周波数と位相から波形を生成するウェーブジェネレータのインタフェースです。 **/
 interface Waveform
 {
@@ -37,7 +39,11 @@ public:
      *      data1 = 整数パラメータ。
      *      data2 = 実数パラメータ。
      */
-    void setParameter(int data1, float data2);
+    void setParameter(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
     
     /** エンベロープをアタック状態に遷移させます。 **/
     void attack();

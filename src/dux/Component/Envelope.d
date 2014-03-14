@@ -410,6 +410,11 @@ public:
      *      data2 = 実数パラメータ。
      */
     void setParameter(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
+    body
     {
         switch (cast(EnvelopeOperate)data1)
         {
