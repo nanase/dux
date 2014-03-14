@@ -19,6 +19,7 @@ import dux.Component.Enums;
 import dux.Component.Waveform;
 import dux.Utils;
 
+/** ステップ (階段状) 波形を生成できるジェネレータクラスです。 */
 class StepWaveform : Waveform
 {
 private:
@@ -26,24 +27,44 @@ private:
     DList!byte queue;
 
 protected:
+    /** 円周率 Math.PI を 2 倍した定数値です。 */
     const static float PI2 = PI * 2.0f;
+
+    /** 円周率 Math.PI を 0.5 倍した定数値です。 */
     const static float PI_2 = PI * 0.5f;
+
+    /** データとして保持できるステップ数を表した定数値です。 */
     const static int MaxDataSize = 65536;
 
+    /** 波形生成に用いられる生データの配列です。 */
     float[] value;
+
+    /** 波形生成に用いられるデータ長の長さです。 */
     float length;
+
+    /** 波形生成に用いられる周波数補正係数です。 */
     double freqFactor = 1.0;
 
 public:
+    /** 空の波形データを使って新しい StepWaveform クラスのインスタンスを初期化します。 */
     this()
     {
         this.reset();
     }
 
 public:
+    /** 与えられた周波数と位相からステップ波形を生成します。
+     *
+     * Params:
+     *      data       = 生成された波形データが代入される配列。
+     *      frequency  = 生成に使用される周波数の配列。
+     *      phase      = 生成に使用される位相の配列。
+     *      sampleTime = 波形が開始されるサンプル時間。
+     *      count      = 配列に代入されるデータの数。
+     */
     void getWaveforms
         (float[] data, double[] frequency, double[] phase, int sampleTime, size_t count)
-    {        
+    {
         for (int i = 0; i < count; i++)
         {
             float tmp = to!float(phase[i] * frequency[i] * this.freqFactor);
@@ -55,6 +76,12 @@ public:
         }
     }
 
+    /** パラメータを指定して波形の設定値を変更します。
+     *
+     * Params:
+     *      data1 = 整数パラメータ。
+     *      data2 = 実数パラメータ。
+     */
     void setParameter(int data1, float data2)
     {
         switch (data1)
@@ -90,19 +117,31 @@ public:
         }
     }
 
+    /** エンベロープをアタック状態に遷移させます。 **/
     void attack()
     {
     }
 
+    /** エンベロープをリリース状態に遷移させます。
+     *
+     * Params:
+     *      time = リリースされたサンプル時間。
+     */
     void release(int time)
     {
     }
 
+    /** 波形のパラメータをリセットします。 */
     void reset()
     {
         this.setStep(this.emptyData[]);
     }
 
+    /** 指定されたステップデータから波形生成用のデータを作成します。
+     *
+     * Params:
+     *      data = 波形生成のベースとなるステップデータを格納したレンジ。
+     */
     void setStep(Range)(Range data)
     if (isInputRange!Range && !isInfinite!Range)
     in
