@@ -7,6 +7,7 @@
 
 module dux.Component.Waveform;
 
+import std.algorithm;
 import std.math;
 
 /** 周波数と位相から波形を生成するウェーブジェネレータのインタフェースです。 **/
@@ -31,6 +32,13 @@ public:
 
         assert(sampleTime >= 0);
         assert(count <= data.length);
+
+        assert(all!"isFinite(a)"(frequency));
+        assert(all!"isFinite(a)"(phase));
+    }
+    out
+    {
+        assert(all!"isFinite(a)"(data));
     }
     
     /** パラメータを指定して波形の設定値を変更します。
