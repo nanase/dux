@@ -54,6 +54,7 @@
     <Compile Include="Component\Handle.d" />
     <Compile Include="Waveform\Waveform.d" />
     <Compile Include="Waveform\StepWaveform.d" />
+    <Compile Include="Waveform\BasicWaveform.d" />
     <Compile Include="Waveform\CachedWaveform.d" />
   </ItemGroup>
 </Project>
