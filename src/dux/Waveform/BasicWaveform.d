@@ -54,6 +54,20 @@ public:
 class Square : CachedWaveform!BaseWaveformCache
 {
 public:
+    override void setParameter(int data1, float data2)
+    {
+        switch (data1)
+        {
+            case BasicWaveformOperate.duty:
+                this.generateStep(data2.clamp(1.0f, 0.0f));
+                break;
+                
+            default:
+                super.setParameter(data1, data2);
+                break;
+        }
+    }
+
     override void reset()
     {
         this.generateStep(0.5f);
