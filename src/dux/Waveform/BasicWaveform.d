@@ -116,6 +116,20 @@ public:
     {
         this.generateStep(16);
     }
+
+    override void setParameter(int data1, float data2)
+    {
+        switch (data1)
+        {
+            case BasicWaveformOperate.type:
+                this.generateStep(to!int(data2).clamp(int.max, 1));
+                break;
+                
+            default:
+                super.setParameter(data1, data2);
+                break;
+        }
+    }
     
 protected:
     override byte[] generate(BaseWaveformCache parameter)
