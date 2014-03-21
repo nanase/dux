@@ -21,7 +21,15 @@ protected:
     static DList!T cacheObjects;
     
 protected:
-    @property int maxCacheSize() { return 32; }
+    @property size_t maxCacheSize()
+    out(result)
+    {
+        assert(result != 0);
+    }
+    body
+    {
+        return 32;
+    }
     
     @property bool canResizeData() { return false; }
     
@@ -29,16 +37,39 @@ protected:
     
 protected:
     float[] generateFloat(T parameter)
+    in
+    {
+        assert(parameter !is null);
+    }
+    out(result)
+    {
+        assert(result.length > 0);
+    }
+    body
     {
         return new float[1];
     }
     
     byte[] generate(T parameter)
+    in
+    {
+        assert(parameter !is null);
+    }
+    out(result)
+    {
+        assert(result.length > 0);
+    }
+    body
     {
         return new byte[1];
     }
     
     void cache(T parameter)
+    in
+    {
+        assert(parameter !is null);
+    }
+    body
     {
         foreach (now; cacheObjects)
         {
@@ -75,6 +106,11 @@ protected:
     }
     
     void pushCache(T parameter)
+    in
+    {
+        assert(parameter !is null);
+    }
+    body
     {
         cacheObjects.insertFront(parameter);
         
