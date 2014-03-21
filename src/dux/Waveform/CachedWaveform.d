@@ -122,10 +122,23 @@ protected:
 interface CacheObject(T)
 {
     @property float[] dataValue();
-    @property float[] dataValue(float[] value);
+    @property float[] dataValue(float[] value)
+    in
+    {
+        assert(value.length > 0);
+    }
 
     @property size_t length();
 
-    bool equals(T other);
-    bool canResize(T other);
+    bool equals(T other)
+    in
+    {
+        assert(other !is null);
+    }
+
+    bool canResize(T other)
+    in
+    {
+        assert(other !is null);
+    }
 }
