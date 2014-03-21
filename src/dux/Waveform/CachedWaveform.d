@@ -11,14 +11,11 @@ import std.array;
 import std.container;
 import std.conv;
 import std.range;
-import std.typecons;
-import std.typetuple;
-import std.traits;
 
 import dux.Component.StepWaveform;
 
 abstract class CachedWaveform(T) : StepWaveform
-if (staticIndexOf!(CacheObject!T, InterfacesTuple!T) >= 0)
+if (is(T : CacheObject!T))
 {
 protected:
     static DList!T cacheObjects;
