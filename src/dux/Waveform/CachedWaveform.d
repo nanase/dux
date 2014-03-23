@@ -14,13 +14,19 @@ import std.range;
 
 import dux.Component.StepWaveform;
 
+/** ステップ音源をキャッシュするための機能と制約を提供します。 */
 abstract class CachedWaveform(T) : StepWaveform
 if (is(T : CacheObject!T))
 {
 protected:
+    /** キャッシュされたステップ音源を格納するリストです。 */
     static DList!T cacheObjects;
     
 protected:
+    /** 派生クラスでオーバーライドされ、この音源で格納できるキャッシュ数を取得します。
+     *
+     * Returns: この音源で格納できるキャッシュ数。
+     */
     @property size_t maxCacheSize()
     out(result)
     {
@@ -30,12 +36,29 @@ protected:
     {
         return 32;
     }
-    
+
+    /** 派生クラスでオーバーライドされ、
+     * この音源がキャッシュに格納されたステップ波形をリサイズ可能かの真偽値を取得します。
+     *
+     * Returns: ステップ波形をリサイズ可能かの真偽値。
+     */
     @property bool canResizeData() { return false; }
-    
+
+    /** 派生クラスでオーバーライドされ、
+     * この音源がステップ波形ではなく直接浮動小数点数の値を出力するかの真偽値を取得します。
+     *
+     * Returns: 直接浮動小数点数の値を出力するかの真偽値。
+     */
     @property bool generatingFloat() { return false; }
     
 protected:
+    /** 浮動小数点数としてステップ波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     *
+     * Returns: 生成されたステップ波形。
+     */
     float[] generateFloat(T parameter)
     in
     {
@@ -49,7 +72,14 @@ protected:
     {
         return new float[1];
     }
-    
+
+    /** 整数値としてステップ波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     *
+     * Returns: 生成されたステップ波形。
+     */
     byte[] generate(T parameter)
     in
     {
@@ -63,7 +93,12 @@ protected:
     {
         return new byte[1];
     }
-    
+
+    /** キャッシュオブジェクトを用いてキャッシュを照会し、必要に応じて波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     */
     void cache(T parameter)
     in
     {
@@ -85,7 +120,6 @@ protected:
                 this.length = to!float(this.value.length);
                 
                 this.value[0 .. parameter.length] = now.dataValue[0 .. parameter.length];
-                //Array.Copy(now.Value.DataValue, this.value, parameter.Length);
                 
                 parameter.dataValue = this.value;
                 this.pushCache(parameter);
@@ -119,23 +153,57 @@ protected:
     }
 }
 
+/** キャッシュに格納された音源を識別するためのキャッシュオブジェクトです。 */
 interface CacheObject(T)
 {
+    /** ステップ波形の生データを取得します。
+     *
+     * Returns: ステップ波形の生データ。
+     */
     @property float[] dataValue();
+
+    /** ステップ波形の生データを設定します。
+     *
+     * Params:
+     *      value = ステップ波形の生データを表す配列。
+     *
+     * Returns: ステップ波形の生データ。
+     */
     @property float[] dataValue(float[] value)
     in
     {
         assert(value.length > 0);
     }
 
+    /** ステップ波形の長さを取得します。
+     *
+     * Returns: ステップ波形の長さ。
+     */
     @property size_t length();
 
+    /** このオブジェクトの dataValue 以外のプロパティが、
+     * 比較されるオブジェクト other と一致するかどうかの真偽値を取得します。
+     *
+     * Params:
+     *      other = 比較されるオブジェクト。
+     *
+     * Returns: 比較の結果、2つのオブジェクトが同一であるとき true、
+     *          それ以外のとき false。
+     */
     bool equals(T other)
     in
     {
         assert(other !is null);
     }
 
+    /** 比較されるオブジェクト other を比較し、リサイズを行って波形を再構築できるかの真偽値を取得します。
+     *
+     * Params:
+     *      other = 比較されるオブジェクト。
+     *
+     * Returns: 比較の結果、リサイズが可能であるとき true、
+     *          それ以外のとき false。
+     */
     bool canResize(T other)
     in
     {
