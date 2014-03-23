@@ -138,7 +138,8 @@ protected:
         parameter.dataValue = this.value;
         this.pushCache(parameter);
     }
-    
+
+private:
     void pushCache(T parameter)
     in
     {
