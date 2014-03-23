@@ -18,6 +18,7 @@ import dux.Component.StepWaveform;
 import dux.Component.CachedWaveform;
 import dux.Utils;
 
+/** 基本波形に対するキャッシュオブジェクトを提供します。 */
 class BaseWaveformCache : CacheObject!BaseWaveformCache
 {
 private:
@@ -25,34 +26,83 @@ private:
     int stepSeed;
     
 public:
+    /** ステップ波形の生データを取得します。
+     *
+     * Returns: ステップ波形の生データ。
+     */
     @property float[] dataValue() { return this.data; }
+
+    /** ステップ波形の生データを設定します。
+     *
+     * Params:
+     *      value = ステップ波形の生データを表す配列。
+     *
+     * Returns: ステップ波形の生データ。
+     */
     @property float[] dataValue(float[] value) { return this.data = value; }
-    
+
+    /** 基本波形のステップ数を取得します。
+     *
+     * Returns: 基本波形のステップ数。
+     */
     @property int step() { return this.stepSeed; }
-    
+
+    /** ステップ波形の長さを取得します。
+     *
+     * Returns: ステップ波形の長さ。
+     */
     @property size_t length() { return this.data.length; }
     
 public:
+    /** ステップ数を指定して新しい BaseWaveformCache クラスのインスタンスを初期化します。
+     *
+     * Params:
+     *      step = 基本波形のステップ数。
+     */
     this(int step)
     {
         this.stepSeed = step;
     }
     
 public:
+    /** このオブジェクトの dataValue 以外のプロパティが、
+     * 比較されるオブジェクト other と一致するかどうかの真偽値を取得します。
+     *
+     * Params:
+     *      other = 比較されるオブジェクト。
+     *
+     * Returns: 比較の結果、2つのオブジェクトが同一であるとき true、
+     *          それ以外のとき false。
+     */
     bool equals(BaseWaveformCache other)
     {
         return this.stepSeed == other.stepSeed;
     }
-    
+
+    /** 比較されるオブジェクト other を比較し、リサイズを行って波形を再構築できるかの真偽値を取得します。
+     *
+     * Params:
+     *      other = 比較されるオブジェクト。
+     *
+     * Returns: 比較の結果、リサイズが可能であるとき true、
+     *          それ以外のとき false。
+     */
     bool canResize(BaseWaveformCache other)
     {
         return false;
     }
 }
 
+/** 矩形波を生成する波形ジェネレータクラスです。 */
 class Square : CachedWaveform!BaseWaveformCache
 {
 public:
+    /** パラメータを指定して波形の設定値を変更します。
+     *
+     * Params:
+     *      data1 = 整数パラメータ。
+     *      data2 = 実数パラメータ。
+     */
     override void setParameter(int data1, float data2)
     {
         switch (data1)
@@ -67,12 +117,20 @@ public:
         }
     }
 
+    /** 波形のパラメータをリセットします。 */
     override void reset()
     {
         this.generateStep(0.5f);
     }
     
 protected:
+    /** 整数値としてステップ波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     *
+     * Returns: 生成されたステップ波形。
+     */
     override byte[] generate(BaseWaveformCache parameter)
     {
         bool reverse = parameter.step < 0;
@@ -108,14 +166,22 @@ private:
     }
 }
 
+/** 擬似三角波を生成する波形ジェネレータクラスです。 */
 class Triangle : CachedWaveform!BaseWaveformCache
 {
 public:
+    /** 波形のパラメータをリセットします。 */
     override void reset()
     {
         this.generateStep(16);
     }
 
+    /** パラメータを指定して波形の設定値を変更します。
+     *
+     * Params:
+     *      data1 = 整数パラメータ。
+     *      data2 = 実数パラメータ。
+     */
     override void setParameter(int data1, float data2)
     {
         switch (data1)
@@ -131,6 +197,13 @@ public:
     }
     
 protected:
+    /** 整数値としてステップ波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     *
+     * Returns: 生成されたステップ波形。
+     */
     override byte[] generate(BaseWaveformCache parameter)
     {
         byte[] l = new byte[parameter.step * 2];
