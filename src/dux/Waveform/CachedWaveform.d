@@ -80,7 +80,7 @@ protected:
      *
      * Returns: 生成されたステップ波形。
      */
-    byte[] generate(T parameter)
+    ubyte[] generate(T parameter)
     in
     {
         assert(parameter !is null);
@@ -91,7 +91,7 @@ protected:
     }
     body
     {
-        return new byte[1];
+        return new ubyte[1];
     }
 
     /** キャッシュオブジェクトを用いてキャッシュを照会し、必要に応じて波形を生成します。

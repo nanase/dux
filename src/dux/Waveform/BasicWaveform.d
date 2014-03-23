@@ -131,12 +131,12 @@ protected:
      *
      * Returns: 生成されたステップ波形。
      */
-    override byte[] generate(BaseWaveformCache parameter)
+    override ubyte[] generate(BaseWaveformCache parameter)
     {
         bool reverse = parameter.step < 0;
         int onTime = (reverse) ? -parameter.step : parameter.step;
         
-        byte[] l = new byte[onTime + 1];
+        ubyte[] l = new ubyte[onTime + 1];
         
         if (reverse)
             // 10, 110, 1110, ...
@@ -204,15 +204,15 @@ protected:
      *
      * Returns: 生成されたステップ波形。
      */
-    override byte[] generate(BaseWaveformCache parameter)
+    override ubyte[] generate(BaseWaveformCache parameter)
     {
-        byte[] l = new byte[parameter.step * 2];
+        ubyte[] l = new ubyte[parameter.step * 2];
         
         for (int i = 0; i < parameter.step; i++)
-            l[i] = to!byte(i);
+            l[i] = to!ubyte(i);
         
         for (int i = parameter.step; i < parameter.step * 2; i++)
-            l[i] = to!byte(parameter.step * 2 - i - 1);
+            l[i] = to!ubyte(parameter.step * 2 - i - 1);
         
         return l;
     }

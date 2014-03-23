@@ -23,8 +23,8 @@ import dux.Utils;
 class StepWaveform : Waveform
 {
 private:
-    static immutable byte[1] emptyData = [0];
-    DList!byte queue;
+    static immutable ubyte[1] emptyData = [0];
+    DList!ubyte queue;
 
 protected:
     /** 円周率 Math.PI を 2 倍した定数値です。 */
@@ -92,15 +92,15 @@ public:
                 
             case StepWaveformOperate.begin:
                 this.queue.clear();
-                this.queue.insertFront(to!byte(data2.clamp(255.0f, 0.0f)));
+                this.queue.insertFront(to!ubyte(data2.clamp(255.0f, 0.0f)));
                 break;
                 
             case StepWaveformOperate.end:
-                this.queue.insertFront(to!byte(data2.clamp(255.0f, 0.0f)));
+                this.queue.insertFront(to!ubyte(data2.clamp(255.0f, 0.0f)));
 
                 if (this.queue[].walkLength() <= MaxDataSize)
                 {
-                    byte[] reverseQueue = new byte[this.queue[].walkLength()];
+                    ubyte[] reverseQueue = new ubyte[this.queue[].walkLength()];
                     this.queue[].copy(reverseQueue);
                     reverseQueue.reverse();
                     this.setStep(reverseQueue[]);
@@ -109,7 +109,7 @@ public:
                 break;
                 
             case StepWaveformOperate.queue:
-                this.queue.insertFront(to!byte(data2.clamp(255.0f, 0.0f)));
+                this.queue.insertFront(to!ubyte(data2.clamp(255.0f, 0.0f)));
                 break;
                 
             default:
