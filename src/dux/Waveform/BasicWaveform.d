@@ -11,7 +11,6 @@ import std.algorithm;
 import std.conv;
 import std.container;
 import std.range;
-import std.typecons;
 
 import dux.Component.Enums;
 import dux.Component.Waveform;
