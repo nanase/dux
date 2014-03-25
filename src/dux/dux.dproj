@@ -56,6 +56,7 @@
     <Compile Include="Waveform\StepWaveform.d" />
     <Compile Include="Waveform\BasicWaveform.d" />
     <Compile Include="Waveform\CachedWaveform.d" />
+    <Compile Include="Utils\JKissEngine.d" />
     <Compile Include="Utils\Algorithm.d" />
   </ItemGroup>
 </Project>
