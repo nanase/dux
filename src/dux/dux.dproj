@@ -44,10 +44,10 @@
   <ItemGroup>
     <Folder Include="Waveform\" />
     <Folder Include="Component\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.d" />
-    <Compile Include="Utils.d" />
     <Compile Include="Component\Envelope.d" />
     <Compile Include="Component\Enums.d" />
     <Compile Include="Component\Panpot.d" />
@@ -56,5 +56,6 @@
     <Compile Include="Waveform\StepWaveform.d" />
     <Compile Include="Waveform\BasicWaveform.d" />
     <Compile Include="Waveform\CachedWaveform.d" />
+    <Compile Include="Utils\Algorithm.d" />
   </ItemGroup>
 </Project>

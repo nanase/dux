@@ -17,7 +17,7 @@ import std.typecons;
 
 import dux.Component.Enums;
 import dux.Component.Waveform;
-import dux.Utils;
+import dux.Utils.Algorithm;
 
 /** ステップ (階段状) 波形を生成できるジェネレータクラスです。 */
 class StepWaveform : Waveform

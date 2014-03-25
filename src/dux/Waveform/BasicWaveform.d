@@ -16,7 +16,7 @@ import dux.Component.Enums;
 import dux.Component.Waveform;
 import dux.Component.StepWaveform;
 import dux.Component.CachedWaveform;
-import dux.Utils;
+import dux.Utils.Algorithm;
 
 /** 基本波形に対するキャッシュオブジェクトを提供します。 */
 class BaseWaveformCache : CacheObject!BaseWaveformCache

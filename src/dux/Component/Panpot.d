@@ -9,7 +9,8 @@ module dux.Component.Panpot;
 
 import std.algorithm;
 import std.math;
-import dux.Utils;
+
+import dux.Utils.Algorithm;
 
 /** 音の定位 (左右チャネルのバランス) を表す実数値を格納する構造体です。 */
 struct Panpot

@@ -13,7 +13,7 @@ import std.math;
 import std.range;
 
 import dux.Component.Enums;
-import dux.Utils;
+import dux.Utils.Algorithm;
 
 /** 時間によって変化するパラメータを実装するためのエンベロープ (包絡線) クラスです。 */
 class Envelope

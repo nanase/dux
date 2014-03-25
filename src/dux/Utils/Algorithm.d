@@ -1,8 +1,13 @@
-﻿module dux.Utils;
+﻿/** dux - ux implementation for D
+ *
+ * Authors: Tomona Nanase
+ * License: The MIT License (MIT)
+ * Copyright: Copyright (c) 2014 Tomona Nanase
+ */
 
+module dux.Utils.Algorithm;
 
 import std.algorithm;
-
 
 T clamp(T)(T value, T maxValue, T minValue)
 if(is(typeof(maxValue > minValue)))
