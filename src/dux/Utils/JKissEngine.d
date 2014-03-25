@@ -42,21 +42,35 @@
 
 module dux.Utils.JKissEngine;
 
+import std.random : isUniformRNG, isSeedable;
+
 struct JKissEngine
 {
 private:
     uint x, y, z, c, r;
     
 public:
-    this(uint seed)
+    /// Mark this as a Rng
+    enum bool isUniformRandom = true;
+
+
+    this(uint value)
     {
-        this.x = seed;
+        this.seed(value);
+    }
+
+public:
+    void seed(uint value)
+    {
+        this.x = value;
         this.y = 987654321u;
         this.z = 43219876u;
         this.c = 6543217u;
+
+        popFront();
     }
-    
-public:
+
+
     int next()
     {
         this.popFront();
@@ -127,4 +141,13 @@ private:
         this.z = cast(uint)t;
         return (this.x + this.y + this.z);
     }
+}
+
+
+unittest
+{
+    static assert(isUniformRNG!JKissEngine);
+    static assert(isUniformRNG!(JKissEngine, uint));
+    static assert(isSeedable!JKissEngine);
+    static assert(isSeedable!(JKissEngine, uint));
 }
