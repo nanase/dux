@@ -53,7 +53,7 @@ public:
     /// Mark this as a Rng
     enum bool isUniformRandom = true;
 
-
+public:
     this(uint value)
     {
         this.seed(value);
@@ -70,16 +70,33 @@ public:
         popFront();
     }
 
-
     int next()
+    out(result)
     {
-        this.popFront();
-        return this.r;
+        assert(result >= 0);
+    }
+    body
+    {
+        // returns a non-negative, [0 - Int32.MacValue], random number
+        // but we want to avoid calls to Math.Abs (call cost and branching cost it requires)
+        // and the fact it would throw for Int32.MinValue (so roughly 1 time out of 2^32)
+        int random = cast(int) this.r;
+        
+        while (random == int.min)
+        {
+            this.popFront();
+            random = cast(int) this.r;
+        }
+
+        int mask = random >> 31;
+        random ^= mask;
+
+        return cast(uint)(random + (mask & 1));
     }
     
     int next(int maxValue)
     {
-        return maxValue > 0 ? cast(int)(this.JKiss() % maxValue) : 0;
+        return maxValue > 0 ? cast(int)(this.r % maxValue) : 0;
     }
     
     int next(int minValue, int maxValue)
@@ -91,35 +108,26 @@ public:
         if (diff <= 1)
             return minValue;
         
-        return minValue + cast(int)(this.JKiss() % diff);
+        return minValue + cast(int)(this.r % diff);
     }
     
-    real nextReal ()
+    real nextReal()
     {
         // a single 32 bits random value is not enough to create a random double value
-        uint a = this.JKiss() >> 6; // Upper 26 bits
-        uint b = this.JKiss() >> 5; // Upper 27 bits
+        uint a = this.r >> 6; // Upper 26 bits
+        this.popFront();
+        uint b = this.r >> 5; // Upper 27 bits
         return (a * 134217728.0 + b) / 9007199254740992.0;
     }
     
     void popFront()
     {
-        // returns a non-negative, [0 - Int32.MacValue], random number
-        // but we want to avoid calls to Math.Abs (call cost and branching cost it requires)
-        // and the fact it would throw for Int32.MinValue (so roughly 1 time out of 2^32)
-        int random = cast(int) this.JKiss();
-        
-        while (random == int.min)
-            random = cast(int) this.JKiss();
-        
-        int mask = random >> 31;
-        random ^= mask;
-        this.r = cast(uint)(random + (mask & 1));
+        this.r = this.JKiss();
     }
     
     @property uint front()
     {
-        return this.r;
+        return this.next();
     }
     
     @property typeof(this) save()
