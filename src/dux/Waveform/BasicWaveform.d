@@ -166,6 +166,39 @@ private:
     }
 }
 
+///
+unittest
+{
+    import std.math : approxEqual;
+
+    Square sq = new Square();
+    float[] data = new float[8];
+    double[] freq = new double[8];
+    double[] phas = [0, 1, 2, 3, 4, 5, 6, 7];
+
+    // expect: 1, 1, 1, 1, -1, -1, -1, -1
+    freq[] = 0.125;    
+    sq.getWaveforms(data, freq, phas, 0, 8);
+
+    assert(approxEqual(data[0 .. 3], 1.0));
+    assert(approxEqual(data[4 .. 7], -1.0));
+
+    // expect: 1, 1, -1, -1, 1, 1, -1, -1
+    freq[] = 0.25;    
+    sq.getWaveforms(data, freq, phas, 0, 8);
+
+    assert(approxEqual(data[0 .. 1], 1.0));
+    assert(approxEqual(data[4 .. 5], 1.0));
+    assert(approxEqual(data[2 .. 3], -1.0));
+    assert(approxEqual(data[6 .. 7], -1.0));
+
+    // expect: 1, 1, 1, 1, 1, 1, 1, 1
+    freq[] = 1.0;    
+    sq.getWaveforms(data, freq, phas, 0, 8);
+
+    assert(approxEqual(data, 1.0));
+}
+
 /** 擬似三角波を生成する波形ジェネレータクラスです。 */
 class Triangle : CachedWaveform!BaseWaveformCache
 {
@@ -225,4 +258,37 @@ private:
         
         this.cache(new BaseWaveformCache(step));
     }
+}
+
+///
+unittest
+{
+    import std.math : approxEqual;
+    
+    Triangle tr = new Triangle();
+    float[] data = new float[8];
+    double[] freq = new double[8];
+    double[] phas = [0, 1, 2, 3, 4, 5, 6, 7];
+    
+    // expect: -1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5
+    freq[] = 1.0 / 8.0;
+    tr.setParameter(BasicWaveformOperate.type, 5);
+    tr.getWaveforms(data, freq, phas, 0, 8);
+    
+    assert(data.all!("a >= -1.0f && a <= 1.0f"));
+    assert(approxEqual(data.reduce!("a + b"), 0.0));
+    
+    // expect: -1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 1.0, 0.0
+    freq[] = 1.0 / 4.0;
+    tr.getWaveforms(data, freq, phas, 0, 8);
+    
+    assert(data.all!("a >= -1.0f && a <= 1.0f"));
+    assert(approxEqual(data.reduce!("a + b"), 0.0));
+    
+    // expect: -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0
+    freq[] = 1.0;
+    tr.getWaveforms(data, freq, phas, 0, 8);
+    
+    assert(data.all!("a >= -1.0f && a <= 1.0f"));
+    assert(approxEqual(data.reduce!("a + b"), -8.0));
 }
