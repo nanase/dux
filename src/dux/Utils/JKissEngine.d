@@ -100,6 +100,15 @@ public:
     }
     
     int next(int minValue, int maxValue)
+    in
+    {
+        assert(minValue <= maxValue);
+    }
+    out(result)
+    {
+        assert(result >= minValue && result < maxValue);
+    }
+    body
     {
         // special case: a difference of one (or less) will always return the minimum
         // e.g. -1,-1 or -1,0 will always return -1
@@ -112,6 +121,11 @@ public:
     }
     
     real nextReal()
+    out(result)
+    {
+        assert(result >= 0.0 && result < 1.0);
+    }
+    body
     {
         // a single 32 bits random value is not enough to create a random double value
         uint a = this.r >> 6; // Upper 26 bits
