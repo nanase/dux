@@ -150,15 +150,14 @@ public:
     }
     body
     {
-        float max = to!float(data.minCount!("a > b")()[0]);
-        float min = to!float(data.minCount!("a < b")()[0]);
-        float a = 2.0f / (max - min);
+        auto min_max = data.reduce!(min, max);
+        float a = 2.0f / (min_max[1] - min_max[0]);
 
         size_t dataLength = data.walkLength();
         this.length = to!float(dataLength);
         this.value = new float[dataLength];
 
-        if (max == min)
+        if (min_max[0] == min_max[1])
         {
             this.value[] = 0.0f;
             return;
@@ -167,7 +166,7 @@ public:
         int i = 0;
         foreach (e; data)
         {
-            this.value[i] = (e - min) * a - 1.0f;
+            this.value[i] = (e - min_max[0]) * a - 1.0f;
             i++;
         }
     }
