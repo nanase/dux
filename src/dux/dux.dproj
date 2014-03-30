@@ -18,7 +18,7 @@
     <OutputName>libdux</OutputName>
     <Target>StaticLibrary</Target>
     <DebugLevel>0</DebugLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>..\..\bin\Release</OutputPath>
@@ -28,7 +28,7 @@
     <OutputName>libdux</OutputName>
     <Target>StaticLibrary</Target>
     <DebugLevel>0</DebugLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Unittest|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,7 +39,7 @@
     <OutputName>libdux</OutputName>
     <Target>Executable</Target>
     <DebugLevel>0</DebugLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Waveform\" />
@@ -58,5 +58,6 @@
     <Compile Include="Waveform\CachedWaveform.d" />
     <Compile Include="Utils\JKissEngine.d" />
     <Compile Include="Utils\Algorithm.d" />
+    <Compile Include="Waveform\Noise.d" />
   </ItemGroup>
 </Project>
