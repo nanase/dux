@@ -16,6 +16,7 @@ import dux.Component.StepWaveform;
 import dux.Component.CachedWaveform;
 import dux.Utils.JKissEngine;
 
+/* 線形帰還シフトレジスタを用いた長周期擬似ノイズジェネレータです。 */
 class LongNoise : StepWaveform
 {
 private:
@@ -38,6 +39,7 @@ private:
     }
 
 public:
+    /* 波形のパラメータをリセットします。 */
     override void reset()
     {
         this.freqFactor = 0.001;
@@ -46,6 +48,7 @@ public:
     }
 }
 
+/* 線形帰還シフトレジスタを用いた短周期擬似ノイズジェネレータです。 */
 class ShortNoise : StepWaveform
 {
 private:
@@ -68,6 +71,7 @@ private:
     }
     
 public:
+    /* 波形のパラメータをリセットします。 */
     override void reset()
     {
         this.freqFactor = 0.001;
@@ -111,11 +115,11 @@ public:
     }
 }
 
+/* 周期とシード値を元にした擬似乱数によるノイズジェネレータです。 */
 class RandomNoise : CachedWaveform!RandomNoiseCache
 {
 private:
     RandomNoiseCache param;
-
 
 protected:
     @property override bool canResizeData() { return true; }
@@ -123,13 +127,20 @@ protected:
     @property override bool generatingFloat() { return true; }
 
 public:
+    /* 波形のパラメータをリセットします。 */
     override void reset()
     {
         this.freqFactor = 1.0;
         this.param = new RandomNoiseCache(0, 1024);
         this.generateStep();
     }
-    
+
+    /** パラメータを指定して波形の設定値を変更します。
+     *
+     * Params:
+     *      data1 = 整数パラメータ。
+     *      data2 = 実数パラメータ。
+     */
     override void setParameter(int data1, float data2)
     {
         switch (data1)
@@ -153,6 +164,13 @@ public:
     }
 
 protected:
+    /** 浮動小数点数としてステップ波形を生成します。
+     *
+     * Params:
+     *      parameter = キャッシュオブジェクト。
+     *
+     * Returns: 生成されたステップ波形。
+     */
     override float[] generateFloat(RandomNoiseCache parameter)
     {
         float[] value = new float[parameter.length];
