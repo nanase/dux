@@ -40,7 +40,7 @@ protected:
     float[] value;
 
     /** 波形生成に用いられるデータ長の長さです。 */
-    float length;
+    float length = 0.0f;
 
     /** 波形生成に用いられる周波数補正係数です。 */
     double freqFactor = 1.0;
@@ -169,6 +169,15 @@ public:
             this.value[i] = (e - min_max[0]) * a - 1.0f;
             i++;
         }
+    }
+
+    invariant()
+    {
+        assert(isFinite(this.freqFactor));
+        assert(this.freqFactor >= 0.0);
+
+        assert(isFinite(this.length));
+        assert(this.length >= 0.0f);
     }
 
     ///
