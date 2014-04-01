@@ -451,7 +451,7 @@ public:
      * 
      * Returns: 一定出力値を持つエンベロープ。
      */
-    static Envelope CreateConstant(float samplingRate)
+    static Envelope createConstant(float samplingRate)
     in
     {
         assert(samplingRate > 0.0f);
@@ -471,7 +471,7 @@ public:
 
     unittest
     {
-        Envelope envelope = Envelope.CreateConstant(100.0f);
+        Envelope envelope = Envelope.createConstant(100.0f);
 
         envelope.attack();
         {
