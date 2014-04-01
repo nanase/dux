@@ -59,5 +59,6 @@
     <Compile Include="Utils\JKissEngine.d" />
     <Compile Include="Utils\Algorithm.d" />
     <Compile Include="Waveform\Noise.d" />
+    <Compile Include="Waveform\FM.d" />
   </ItemGroup>
 </Project>
