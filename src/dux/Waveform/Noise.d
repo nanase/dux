@@ -94,6 +94,22 @@ public:
         this.value = data;
         this.length = DataSize;
     }
+
+    ///
+    unittest
+    {
+        auto checking =
+            [ 1f,  1f,  1f,  1f,  1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, 1f, -1f, -1f, -1f, -1f, -1f,
+              1f,  1f, -1f, -1f, -1f, -1f,  1f, -1f,  1f, -1f, -1f, -1f, 1f,  1f,  1f,  1f, -1f, -1f,
+              1f, -1f, -1f, -1f,  1f, -1f,  1f,  1f, -1f, -1f,  1f,  1f, 1f, -1f,  1f, -1f,  1f, -1f,
+             -1f,  1f,  1f,  1f,  1f,  1f, -1f,  1f, -1f, -1f, -1f, -1f, 1f,  1f,  1f, -1f, -1f, -1f,
+              1f, -1f, -1f,  1f, -1f, -1f,  1f,  1f, -1f,  1f,  1f, -1f, 1f, -1f,  1f,  1f, -1f,  1f,
+              1f,  1f,  1f, -1f,  1f,  1f, -1f, -1f, -1f,  1f,  1f, -1f, 1f, -1f, -1f,  1f, -1f,  1f,
+              1f,  1f, -1f,  1f,  1f,  1f, -1f, -1f,  1f,  1f, -1f, -1f, 1f, -1f,  1f, -1f,  1f, -1f,
+              1f];
+        
+        assert(equal(checking, data));
+    }
 }
 
 class RandomNoiseCache : CacheObject!RandomNoiseCache
