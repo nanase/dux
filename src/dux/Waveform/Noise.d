@@ -46,6 +46,22 @@ public:
         this.value = data;
         this.length = DataSize;
     }
+
+    ///
+    unittest
+    {
+        auto checking =
+            [ 1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f,  1f, -1f, -1f, -1f, -1f,
+             -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,
+             -1f, -1f, -1f, -1f, -1f, -1f,  1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,
+             -1f, -1f,  1f, -1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,  1f,  1f,
+              1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,  1f, -1f, -1f, -1f,  1f, -1f,
+             -1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,  1f,  1f, -1f, -1f,  1f,  1f, -1f, -1f, -1f, -1f,
+             -1f, -1f, -1f, -1f,  1f, -1f,  1f, -1f,  1f, -1f,  1f, -1f, -1f, -1f, -1f, -1f, -1f, -1f,
+              1f,  1f,  1f];
+
+        assert(equal(checking, data[0 .. checking.length]));
+    }
 }
 
 /* 線形帰還シフトレジスタを用いた短周期擬似ノイズジェネレータです。 */
