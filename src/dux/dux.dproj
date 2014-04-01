@@ -60,5 +60,6 @@
     <Compile Include="Utils\Algorithm.d" />
     <Compile Include="Waveform\Noise.d" />
     <Compile Include="Waveform\FM.d" />
+    <Compile Include="Component\Part.d" />
   </ItemGroup>
 </Project>
