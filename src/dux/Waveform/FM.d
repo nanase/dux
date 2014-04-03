@@ -14,6 +14,7 @@ import dux.Component.Enums;
 import dux.Component.Envelope;
 import dux.Component.Waveform;
 
+/* FM (周波数変調) を用いた波形ジェネレータクラスです。 */
 class FM : Waveform
 {
 private:
@@ -21,6 +22,11 @@ private:
     Operator op0, op1, op2, op3;
 
 public:
+    /* 新しい FM クラスのインスタンスを初期化します。
+     * 
+     * Params:
+     *      samplingRate = サンプリング周波数。
+     */
     this(float samplingRate)
     {
         this.reset();
@@ -28,6 +34,15 @@ public:
     }
 
 public:
+    /** 与えられた周波数と位相から波形を生成します。
+     *
+     * Params:
+     *      data       = 生成された波形データが代入される配列。
+     *      frequency  = 生成に使用される周波数の配列。
+     *      phase      = 生成に使用される位相の配列。
+     *      sampleTime = 波形が開始されるサンプル時間。
+     *      count      = 配列に代入されるデータの数。
+     */
     void getWaveforms
         (float[] data, double[] frequency, double[] phase, int sampleTime, size_t count)
     {
@@ -101,6 +116,12 @@ public:
         this.op3.old = old3;
     }
 
+    /** パラメータを指定して波形の設定値を変更します。
+     *
+     * Params:
+     *      data1 = 整数パラメータ。
+     *      data2 = 実数パラメータ。
+     */
     void setParameter(int data1, float data2)
     {
         Operator op;
@@ -197,6 +218,7 @@ public:
         this.selectProcessingOperator();
     }
 
+    /** エンベロープをアタック状態に遷移させます。 **/
     void attack()
     {
         this.op0.attack();
@@ -205,6 +227,11 @@ public:
         this.op3.attack();
     }
 
+    /** エンベロープをリリース状態に遷移させます。
+     *
+     * Params:
+     *      time = リリースされたサンプル時間。
+     */
     void release(int time)
     {
         this.op0.release(time);
@@ -213,6 +240,7 @@ public:
         this.op3.release(time);
     }
 
+    /** 波形のパラメータをリセットします。 */
     void reset()
     {
         this.op0 = new Operator(samplingRate);
