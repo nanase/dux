@@ -17,6 +17,7 @@ import dux.Component.Handle;
 import dux.Component.Waveform;
 import dux.Component.Panpot;
 
+/* 波形生成の単位となるパートクラスです。 */
 class Part
 {
 private:
@@ -44,8 +45,10 @@ private:
     private float[] outputBuffer;
 
 public:
+    /* 生成された波形のバッファ配列を取得します。 */
     @property float[] buffer() { return this.outputBuffer; }
-    
+
+    /* このパートが発音状態にあるかを表す真偽値を取得します。 */
     @property bool isSounding() { return this.envelope.state != EnvelopeState.silence; }
 
 private:
@@ -58,6 +61,11 @@ private:
     }
     
 public:
+    /* 新しい Part クラスのインスタンスを初期化します。
+     * 
+     * Params:
+     *      samplingRate = マスタークラスでのサンプリング周波数。
+     */
     this(float samplingRate)
     {
         this.envelope = new Envelope(samplingRate);
@@ -70,6 +78,11 @@ public:
     }
 
 public:
+    /* 波形を生成します。
+     * 
+     * Params:
+     *      sampleCount = 生成される波形のサンプル数。
+     */
     void generate(size_t sampleCount)
     {
         // 未発音は除外
@@ -134,6 +147,7 @@ public:
         this.sampleTime += sampleCount;
     }
 
+    /* このパートに割当てられている設定値をリセットします。 */
     void reset()
     {
         import dux.Component.BasicWaveform;
@@ -163,6 +177,11 @@ public:
         this.envelope.reset();
     }
 
+    /* 長さ 0 で指定されたノートで内部状態を変更します。エンベロープはアタック状態に遷移せず、発音されません。
+     * 
+     * Params:
+     *      note = ノート値。
+     */
     void zeroGate(int note)
     {
         this.vibratePhase = 0.0;
@@ -174,7 +193,12 @@ public:
         else
             this.noteFreq = (key < 128 && key >= 0) ? noteFactor[key] : 0.0;
     }
-    
+
+    /* 指定されたノートでエンベロープをアタック状態に遷移させます。
+     * 
+     * Params:
+     *      note = ノート値。
+     */
     void attack(int note)
     {
         this.sampleTime = 0;
@@ -189,17 +213,24 @@ public:
         this.waveform.attack();
     }
 
+    /* エンベロープをリリース状態に遷移させます。 */
     void release()
     {
         this.envelope.release(this.sampleTime);
         this.waveform.release(this.sampleTime);
     }
-    
+
+    /* エンベロープをサイレンス状態に遷移させます。 */
     void silence()
     {
         this.envelope.silence();
     }
 
+    /* このパートにハンドルを適用します。
+     * 
+     * Params:
+     *      handle = 適用されるハンドル。
+     */
     void applyHandle(Handle handle)
     {
         switch (handle.type)
