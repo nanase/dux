@@ -386,47 +386,37 @@ private:
         import dux.Component.StepWaveform;
         import dux.Component.FM;
 
+        this.waveform.reset();
+
         switch (data1)
         {
             case WaveformType.square:
-                if (cast(Square)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(Square)this.waveform)
                     this.waveform = new Square();
                 break;
                 
             case WaveformType.triangle:
-                if (cast(Triangle)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(Triangle)this.waveform)
                     this.waveform = new Triangle();
                 break;
 
             case WaveformType.shortNoise:
-                if (cast(ShortNoise)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(ShortNoise)this.waveform)
                     this.waveform = new ShortNoise();
                 break;
                 
             case WaveformType.longNoise:
-                if (cast(LongNoise)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(LongNoise)this.waveform)
                     this.waveform = new LongNoise();
                 break;
                 
             case WaveformType.randomNoise:
-                if (cast(RandomNoise)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(RandomNoise)this.waveform)
                     this.waveform = new RandomNoise();
                 break;
                 
             case WaveformType.fm:
-                if (cast(FM)this.waveform)
-                    this.waveform.reset();
-                else
+                if (!cast(FM)this.waveform)
                     this.waveform = new FM(this.samplingRate);
                 break;
                 
