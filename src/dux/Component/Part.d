@@ -21,21 +21,21 @@ import dux.Component.Panpot;
 class Part
 {
 private:
-    static double[] noteFactor;
+    static real[] noteFactor;
     static const float Amplifier = 0.5f;
     static const float A = 2.0;
 
 private:
-    immutable double sampleDeltaTime;
+    immutable real sampleDeltaTime;
     Envelope envelope;
     immutable float samplingRate;
 
 private:
     private Waveform waveform;    
     private float volume, expression, velocity, gain;
-    private double finetune, noteFreq, notePhase, noteFreqOld;
-    private double vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
-    private double portamentSpeed;
+    private real finetune, noteFreq, notePhase, noteFreqOld;
+    private real vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
+    private real portamentSpeed;
     private bool portament, vibrate;
     private float[] smplBuffer, envlBuffer;
     private double[] phasBuffer, freqBuffer;
@@ -54,7 +54,7 @@ public:
 private:
     static this()
     {
-        noteFactor = new double[128];
+        noteFactor = new real[128];
 
         for (int i = 0; i < 128; i++)
             noteFactor[i] = (pow(2.0, (i - 69) / 12.0)) * 440.0;
