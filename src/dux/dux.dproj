@@ -61,5 +61,7 @@
     <Compile Include="Waveform\Noise.d" />
     <Compile Include="Waveform\FM.d" />
     <Compile Include="Component\Part.d" />
+    <Compile Include="Master.d" />
+    <Compile Include="Component\Exception.d" />
   </ItemGroup>
 </Project>
