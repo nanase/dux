@@ -39,11 +39,48 @@ private:
 
 public:
     @property float samplingRate() { return this._samplingRate; }
-    
+
+    unittest
+    {
+        Master m = new Master();
+        assert(m.samplingRate == DefaultSamplingRate);
+    }
+
+    unittest
+    {
+        const real SAMPLINGRATE = 12345.0;
+        Master m = new Master(SAMPLINGRATE, 1);
+        assert(m.samplingRate == SAMPLINGRATE);
+    }
+
     @property bool isPlaying() { return this._isPlaying; }
+
+    unittest
+    {
+        Master m = new Master();
+        
+        assert(!m.isPlaying());
+        m.play();
+        assert(m.isPlaying());
+        m.stop();
+        assert(!m.isPlaying());
+    }
     
     @property size_t partCount() { return this._partCount; }
+
+    unittest
+    {
+        Master m = new Master();
+        assert(m.partCount == DefaultPartCount);
+    }
     
+    unittest
+    {
+        const size_t PARTCOUNT = 42;
+        Master m = new Master(12345.0, PARTCOUNT);
+        assert(m.partCount == PARTCOUNT);
+    }
+
     @property size_t toneCount() { return this.parts.count!("a.isSounding"); }
     
     @property float threshold() { return this.compressorThreshold; }
@@ -90,6 +127,15 @@ public:
         this.masterVolume = value.clamp(2.0f, 0.0f);
 
         return value;
+    }
+
+    unittest
+    {
+        Master m = new Master();
+        m.masterVolume = 0.8;
+        assert(m.masterVolume == 0.8);
+        m.masterVolume = -0.5;
+        assert(m.masterVolume == 0.0);
     }
     
 public:
