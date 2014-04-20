@@ -305,7 +305,7 @@ private:
         }
     }
     
-    private void prepareCompressor()
+    void prepareCompressor()
     {
         float threshold = this.compressorThreshold;
         float ratio = this.compressorRatio;
