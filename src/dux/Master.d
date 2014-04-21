@@ -124,7 +124,7 @@ public:
         if (!isFinite(value))
             throw new OutOfRangeException();
 
-        this.masterVolume = value.clamp(2.0f, 0.0f);
+        this._masterVolume = value.clamp(2.0f, 0.0f);
 
         return value;
     }
