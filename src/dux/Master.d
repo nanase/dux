@@ -316,3 +316,29 @@ private:
         this.downover = -threshold * (1.0f - ratio);
     }
 }
+
+unittest
+{
+    import dux.Component.Enums;
+    import dux.Master;
+    import dux.Component.Handle;
+    
+    Master m = new Master(880, 1);
+    real[] buffer = new real[4];
+
+    m.pushHandle([
+        new Handle(1, HandleType.waveform, WaveformType.square),
+        new Handle(1, HandleType.envelope, EnvelopeOperate.attack, 0.0),
+        new Handle(1, HandleType.envelope, EnvelopeOperate.peak, 0.0),
+        new Handle(1, HandleType.envelope, EnvelopeOperate.decay, 0.0),
+        new Handle(1, HandleType.envelope, EnvelopeOperate.sustain, 1.0),
+        new Handle(1, HandleType.envelope, EnvelopeOperate.release, 0.0),
+        new Handle(1, HandleType.noteOn, 69, 1.0)   // 440 Hz
+    ]);
+    
+    m.play();    
+    m.read(buffer, 0, 4);
+
+    assert(approxEqual(buffer[0], buffer[1]));
+    assert(approxEqual(buffer[2], buffer[3]));
+}
