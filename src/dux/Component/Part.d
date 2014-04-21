@@ -88,7 +88,7 @@ public:
         // 未発音は除外
         if (!this.isSounding)
         {
-            this.buffer[] = 0.0f;
+            this.outputBuffer[] = 0.0f;
             return;
         }
 
@@ -97,10 +97,10 @@ public:
             this.extendBuffers(sampleCount);
         
         // 出力バッファ更新
-        if (this.buffer.length < sampleCount * 2)
+        if (this.outputBuffer.length < sampleCount * 2)
             this.outputBuffer = new float[to!int(sampleCount * 2.5)];
         else
-            this.buffer[] = 0.0f;
+            this.outputBuffer[] = 0.0f;
         
         // Generate Parameter
         for (int i = 0; i < sampleCount; i++)
@@ -140,8 +140,8 @@ public:
         for (int i = 0, j = 0; i < sampleCount; i++)
         {
             float c = this.smplBuffer[i] * (this.envlBuffer[i] * vtmp) ^^ Part.A;
-            this.buffer[j++] = c * this.panpot.l;
-            this.buffer[j++] = c * this.panpot.r;
+            this.outputBuffer[j++] = c * this.panpot.l;
+            this.outputBuffer[j++] = c * this.panpot.r;
         }
         
         this.sampleTime += sampleCount;
