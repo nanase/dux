@@ -38,7 +38,15 @@ private:
     float compressorRatio = 1.0f / 2.0f;
 
 public:
-    @property float samplingRate() { return this._samplingRate; }
+    @property float samplingRate()
+    out(result)
+    {
+        assert(result > 0.0f);
+    }
+    body
+    {
+        return this._samplingRate;
+    }
 
     unittest
     {
@@ -66,7 +74,15 @@ public:
         assert(!m.isPlaying());
     }
     
-    @property size_t partCount() { return this._partCount; }
+    @property size_t partCount()
+    out(result)
+    {
+        assert(result > 0);
+    }
+    body
+    {
+        return this._partCount;
+    }
 
     unittest
     {
@@ -81,7 +97,15 @@ public:
         assert(m.partCount == PARTCOUNT);
     }
 
-    @property size_t toneCount() { return this.parts.count!("a.isSounding"); }
+    @property size_t toneCount() 
+    out(result)
+    {
+        assert(result >= 0 && this._partCount <= result);
+    }
+    body
+    {
+        return this.parts.count!("a.isSounding");
+    }
     
     @property float threshold() { return this.compressorThreshold; }
 
@@ -117,9 +141,22 @@ public:
         return value;
     }
     
-    @property float masterVolume() { return this._masterVolume; }
+    @property float masterVolume()
+    out(result)
+    {
+        assert(this._masterVolume >= 0.0f && this._masterVolume <= 2.0f);
+    }
+    body
+    {
+        return this._masterVolume;
+    }
 
     @property float masterVolume(float value) 
+    out(result)
+    {
+        assert(this._masterVolume >= 0.0f && this._masterVolume <= 2.0f);
+    }
+    body
     {
         if (!isFinite(value))
             throw new OutOfRangeException();
@@ -147,6 +184,12 @@ public:
     }
 
     this(float samplingRate, size_t partCount)
+    in
+    {
+        assert(samplingRate > 0.0f && samplingRate <= float.max);
+        assert(partCount > 0);
+    }
+    body
     {
         if (samplingRate > 0.0f && samplingRate <= float.max)
             this._samplingRate = samplingRate;
@@ -236,6 +279,11 @@ public:
     }
     
     int read(real[] buffer, int offset, int count)
+    in
+    {
+        assert(buffer.length <= count + offset);
+    }
+    body
     {
         // バッファクリア
         buffer.fill(0.0);
