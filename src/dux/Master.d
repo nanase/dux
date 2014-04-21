@@ -43,14 +43,14 @@ public:
     unittest
     {
         Master m = new Master();
-        assert(m.samplingRate == DefaultSamplingRate);
+        assert(approxEqual(m.samplingRate, DefaultSamplingRate));
     }
 
     unittest
     {
         const real SAMPLINGRATE = 12345.0;
         Master m = new Master(SAMPLINGRATE, 1);
-        assert(m.samplingRate == SAMPLINGRATE);
+        assert(approxEqual(m.samplingRate, SAMPLINGRATE));
     }
 
     @property bool isPlaying() { return this._isPlaying; }
@@ -132,10 +132,12 @@ public:
     unittest
     {
         Master m = new Master();
+
         m.masterVolume = 0.8;
-        assert(m.masterVolume == 0.8);
+        assert(approxEqual(m.masterVolume, 0.8));
+
         m.masterVolume = -0.5;
-        assert(m.masterVolume == 0.0);
+        assert(approxEqual(m.masterVolume, 0.0));
     }
     
 public:
