@@ -242,12 +242,23 @@ public:
     }
 
     void pushHandle(Handle handle)
+    in
+    {
+        assert(handle !is null);
+    }
+    body
     {
         synchronized (this)
             this.handleQueue.insertBack(handle);
     }
     
     void pushHandle(Range)(Handle handle, Range targetParts)
+    if (isInputRange!Range && !isInfinite!Range)
+    in
+    {
+        assert(handle !is null);
+    }
+    body
     {
         synchronized (this)
             foreach (int i; targetParts)
@@ -255,6 +266,7 @@ public:
     }
     
     void pushHandle(Range)(Range handles)
+    if (isInputRange!Range && !isInfinite!Range)
     {
         synchronized (this)
             foreach (Handle handle; handles)
@@ -262,6 +274,12 @@ public:
     }
     
     void pushHandle(Range)(Range handles, int targetPart)
+    if (isInputRange!Range && !isInfinite!Range)
+    in
+    {
+        assert(targetPart >= 0);
+    }
+    body
     {
         synchronized (this)
             foreach (Handle handle; handles)
@@ -269,6 +287,8 @@ public:
     }
 
     void pushHandle(Range1, Range2)(Range1 handles, Range2 targetParts)
+    if (isInputRange!Range1 && !isInfinite!Range1 &&
+        isInputRange!Range2 && !isInfinite!Range2)
     {
         synchronized (this)
         {
