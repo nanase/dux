@@ -31,18 +31,18 @@ private:
     immutable float samplingRate;
 
 private:
-    private Waveform waveform;    
-    private float volume, expression, velocity, gain;
-    private real finetune, noteFreq, notePhase, noteFreqOld;
-    private real vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
-    private real portamentSpeed;
-    private bool portament, vibrate;
-    private float[] smplBuffer, envlBuffer;
-    private double[] phasBuffer, freqBuffer;
-    private int sampleTime;
-    private Panpot panpot;
-    private int keyShift;
-    private float[] outputBuffer;
+    Waveform waveform;    
+    float volume, expression, velocity, gain;
+    real finetune, noteFreq, notePhase, noteFreqOld;
+    real vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
+    real portamentSpeed;
+    bool portament, vibrate;
+    float[] smplBuffer, envlBuffer;
+    double[] phasBuffer, freqBuffer;
+    int sampleTime;
+    Panpot panpot;
+    int keyShift;
+    float[] outputBuffer;
 
 public:
     /* 生成された波形のバッファ配列を取得します。 */
