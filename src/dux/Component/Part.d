@@ -67,6 +67,11 @@ public:
      *      samplingRate = マスタークラスでのサンプリング周波数。
      */
     this(float samplingRate)
+    in
+    {
+        assert(samplingRate > 0.0f && samplingRate <= float.max);
+    }
+    body
     {
         this.envelope = new Envelope(samplingRate);
         this.outputBuffer = new float[0];
@@ -183,6 +188,11 @@ public:
      *      note = ノート値。
      */
     void zeroGate(int note)
+    in
+    {
+        assert(note >= 0);
+    }
+    body
     {
         this.vibratePhase = 0.0;
         
@@ -200,6 +210,11 @@ public:
      *      note = ノート値。
      */
     void attack(int note)
+    in
+    {
+        assert(note >= 0);
+    }
+    body
     {
         this.sampleTime = 0;
         this.notePhase = 0.0;
@@ -232,6 +247,11 @@ public:
      *      handle = 適用されるハンドル。
      */
     void applyHandle(Handle handle)
+    in
+    {
+        assert(handle !is null);
+    }
+    body
     {
         switch (handle.type)
         {
@@ -321,6 +341,11 @@ private:
     }
     
     void applyForVolume(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
+    body
     {
         switch (data1)
         {
@@ -346,6 +371,11 @@ private:
     }
     
     void applyForVibrate(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
+    body
     {
         switch (data1)
         {
@@ -380,6 +410,11 @@ private:
     }
 
     void applyForWaveform(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
+    body
     {
         import dux.Component.BasicWaveform;
         import dux.Component.Noise;
@@ -426,6 +461,11 @@ private:
     }
     
     void applyForPortament(int data1, float data2)
+    in
+    {
+        assert(!isNaN(data2));
+    }
+    body
     {
         switch (data1)
         {
