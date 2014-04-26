@@ -303,6 +303,11 @@ public:
     {
         assert(buffer.length <= count + offset);
     }
+    out(result)
+    {
+        assert(result >= 0);
+        assert(result <= count);
+    }
     body
     {
         // バッファクリア
