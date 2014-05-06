@@ -379,6 +379,11 @@ private:
 
 public:
     this(float samplingRate)
+    in
+    {
+        assert(samplingRate > 0.0f);
+    }
+    body
     {
         this.samplingRate = samplingRate;
         
@@ -424,6 +429,11 @@ public:
     }
 
     void release(int time)
+    in
+    {
+        assert(time >= 0);
+    }
+    body
     {
         if (this.outAmplifierEnvelope !is null)
             this.outAmplifierEnvelope.release(time);
@@ -442,6 +452,11 @@ public:
     }
     
     void generateEnvelope(int sampleTime, size_t sampleCount)
+    in
+    {
+        assert(sampleTime >= 0);
+    }
+    body
     {
         if (this.outAmplifierEnvelopeBuffer.length < sampleCount)
             this.extendBuffer(sampleCount);
