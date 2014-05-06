@@ -487,6 +487,39 @@ public:
             this.send3EnvelopeBuffer[] = 1.0f;
     }
 
+    void reset()
+    {
+        outAmplifier = 0.0f;
+        freqFactor = 1.0f;
+        send0 = 0.0f;
+        send1 = 0.0f;
+        send2 = 0.0f;
+        send3 = 0.0f;
+        old = 0.0f;
+        isSelected = false;
+        
+        if (outAmplifierEnvelope !is null)
+            outAmplifierEnvelope = Envelope.createConstant(this.samplingRate);
+
+        if (send0Envelope !is null)
+            send0Envelope = Envelope.createConstant(this.samplingRate);
+        
+        if (send1Envelope !is null)
+            send1Envelope = Envelope.createConstant(this.samplingRate);
+        
+        if (send2Envelope !is null)
+            send2Envelope = Envelope.createConstant(this.samplingRate);
+        
+        if (send3Envelope !is null)
+            send3Envelope = Envelope.createConstant(this.samplingRate);
+
+        outAmplifierEnvelopeBuffer[] = 0;
+        send0EnvelopeBuffer[] = 0;
+        send1EnvelopeBuffer[] = 0;
+        send2EnvelopeBuffer[] = 0;
+        send3EnvelopeBuffer[] = 0;
+    }
+
 private:
     void extendBuffer(size_t length)
     {
