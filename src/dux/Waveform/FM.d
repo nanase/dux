@@ -29,8 +29,8 @@ public:
      */
     this(float samplingRate)
     {
-        this.reset();
         this.samplingRate = samplingRate;
+        this.reset();
     }
 
 public:
