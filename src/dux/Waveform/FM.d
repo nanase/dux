@@ -8,6 +8,7 @@
 module dux.Component.FM;
 
 import std.math;
+import std.conv;
 
 import dux.Utils.Algorithm;
 import dux.Component.Enums;
@@ -124,6 +125,12 @@ public:
      */
     void setParameter(int data1, float data2)
     {
+        if ((data1 & 0x0f00) == FMOperate.algorithm)
+        {
+            this.setAlgorithm(data1, data2);
+            return;
+        }
+
         Operator op;
         switch (data1 & 0xf000)
         {
@@ -356,6 +363,88 @@ private:
         assert(!fm.op1.isSelected);
         assert(!fm.op2.isSelected);
         assert(!fm.op3.isSelected);
+    }
+
+    void setAlgorithm(int data1, float data2)
+    {
+        this.op0.reset();
+        this.op1.reset();
+        this.op2.reset();
+        this.op3.reset();
+        
+        switch (to!int(data2).clamp(int.max, 0))
+        {
+            case 0:
+                this.op0.send0 = 1.0f;
+                this.op0.send1 = 1.0f;
+                this.op1.send2 = 1.0f;
+                this.op2.send3 = 1.0f;
+                this.op3.outAmplifier = 1.0f;
+                break;
+                
+            case 1:
+                this.op0.send0 = 1.0f;
+                this.op0.send2 = 1.0f;
+                this.op1.send2 = 1.0f;
+                this.op2.send3 = 1.0f;
+                this.op3.outAmplifier = 1.0f;
+                break;
+                
+            case 2:
+                this.op0.send0 = 1.0f;
+                this.op0.send3 = 1.0f;
+                this.op1.send2 = 1.0f;
+                this.op2.send3 = 1.0f;
+                this.op3.outAmplifier = 1.0f;
+                break;
+                
+            case 3:
+                this.op0.send0 = 1.0f;
+                this.op0.send1 = 1.0f;
+                this.op1.send3 = 1.0f;
+                this.op2.send3 = 1.0f;
+                this.op3.outAmplifier = 1.0f;
+                break;
+                
+            case 4:
+                this.op0.send0 = 1.0f;
+                this.op0.send1 = 1.0f;
+                this.op1.outAmplifier = 0.5f;
+                this.op2.send3 = 1.0f;
+                this.op3.outAmplifier = 0.5f;
+                break;
+                
+            case 5:
+                this.op0.send0 = 1.0f;
+                this.op0.send1 = 1.0f;
+                this.op0.send2 = 1.0f;
+                this.op0.send3 = 1.0f;
+                this.op1.outAmplifier = 1.0f / 3.0f;
+                this.op2.outAmplifier = 1.0f / 3.0f;
+                this.op3.outAmplifier = 1.0f / 3.0f;
+                break;
+                
+            case 6:
+                this.op0.send0 = 1.0f;
+                this.op0.send1 = 1.0f;
+                this.op1.outAmplifier = 1.0f / 3.0f;
+                this.op2.outAmplifier = 1.0f / 3.0f;
+                this.op3.outAmplifier = 1.0f / 3.0f;
+                break;
+
+            case 7:
+                this.op0.send0 = 1.0f;
+                this.op0.outAmplifier = 0.25f;
+                this.op1.outAmplifier = 0.25f;
+                this.op2.outAmplifier = 0.25f;
+                this.op3.outAmplifier = 0.25f;
+                break;
+                
+            default:
+                break;
+        }
+        
+        this.selectProcessingOperator();
     }
 }
 
